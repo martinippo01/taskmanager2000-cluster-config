@@ -28,12 +28,6 @@ variable "ec2_key_file" {
     default     = "~/.ssh/id_ed25519.pub"
 }
 
-variable "ec2_ami" {
-    description = "AMI ID for the EC2 instance"
-    type = string
-    default     = "ami-080e1f13689e07408" # Ubuntu 22.04 LTS (HVM), SDD Volume Type
-}
-
 variable "ec2_k8s_instance_type" {
     description = "Instance type for the EC2 instance"
     type = string
@@ -50,4 +44,22 @@ variable "ec2_pipeline_instance_type" {
     description = "Instance type for the EC2 instance"
     type = string
     default     = "t2.micro"  
+}
+
+variable "ec2_nfs_instance_type" {
+    description = "Instance type for the EC2 instance"
+    type = string
+    default     = "t2.micro"  
+}
+
+variable "ec2_nfs_volume_size" {
+    description = "Size of the EBS volume for the NFS server"
+    type = number
+    default     = 8
+}
+
+variable "ec2_nfs_mount_point" {
+    description = "Mount point for the NFS server"
+    type = string
+    default     = "/mnt/nfs"
 }
