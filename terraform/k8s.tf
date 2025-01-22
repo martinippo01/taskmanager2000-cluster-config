@@ -12,9 +12,15 @@ resource "aws_instance" "ec2_k8s_master" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
+    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+
     tags = {
         Name = "${var.vpc_name}-ec2-k8s-master"
     }  
+
+    user_data_base64 = base64encode(
+        templatefile("${local.scripts_path}/k8s-master-userdata.sh", {})
+    )
 }
 
 resource "aws_instance" "ec2_k8s_workers" {
@@ -32,7 +38,15 @@ resource "aws_instance" "ec2_k8s_workers" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
+    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+
     tags = {
         Name = "${var.vpc_name}-ec2-k8s-worker-${count.index + 1}"
     }
+
+    user_data_base64 = base64encode(
+        templatefile("${local.scripts_path}/k8s-worker-userdata.sh", {
+            worker_id = count.index + 1
+        })
+    )
 }

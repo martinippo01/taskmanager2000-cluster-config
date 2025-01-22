@@ -18,11 +18,13 @@ resource "aws_instance" "nfs" {
         delete_on_termination = true
     }
 
+    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+
     tags = {
         Name = "${var.vpc_name}-ec2-nfs"
     }
 
-    user_data = base64encode(
+    user_data_base64 = base64encode(
         templatefile("${local.scripts_path}/nfs-userdata.sh", {
             nfs_mount_point = var.ec2_nfs_mount_point
             nfs_server_ip = self.private_ip

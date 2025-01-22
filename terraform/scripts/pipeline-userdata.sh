@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/
 
 # Update and upgrade the system
@@ -33,6 +35,4 @@ docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitla
     --description "docker-runner" \
     --tag-list "docker,aws" \
     --run-untagged="true"
-
-# Configure the Runner
 

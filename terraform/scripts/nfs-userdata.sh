@@ -20,5 +20,3 @@ sudo chown -R ubuntu:ubuntu ${nfs_mount_point}
 
 # Add the NFS share to the /etc/fstab file
 echo "${nfs_server_ip}:${nfs_mount_point} ${nfs_mount_point} nfs defaults 0 0" | sudo tee -a /etc/fstab
-
-# Install the NFS server
