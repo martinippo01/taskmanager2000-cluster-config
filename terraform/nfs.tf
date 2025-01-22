@@ -19,31 +19,15 @@ resource "aws_instance" "nfs" {
     }
 
     tags = {
-        Name = "${var.vpc_name}-nfs"
-    }
-}
-
-// https://stackoverflow.com/questions/69488032/terraform-how-to-mount-efs-access-point-to-ec2
-resource "null_resource" "nfs_provisioner" {
-    depends_on = [ aws_instance.nfs ]
-
-    connection {
-        host = aws_instance.nfs.public_ip
-        type = "ssh"
-        user = local.ec2_user
-        private_key = file(var.ec2_key_file)
+        Name = "${var.vpc_name}-ec2-nfs"
     }
 
-    provisioner "remote-exec" {
-      inline = [ 
-        "sudo apt-get update -y",
-        "sudo apt-get install nfs-common -y",
-        "sudo mkdir -p ${var.ec2_nfs_mount_point}",
-        "sudo mount -t nfs4 ${aws_instance.nfs.private_ip}:${var.ec2_nfs_mount_point} ${var.ec2_nfs_mount_point}",
-        "sudo chown -R ubuntu:ubuntu ${var.ec2_nfs_mount_point}",
-        "echo '${aws_instance.nfs.private_ip}:${var.ec2_nfs_mount_point} ${var.ec2_nfs_mount_point} nfs defaults 0 0' | sudo tee -a /etc/fstab"
-       ]
-    }
+    user_data = base64encode(
+        templatefile("${local.scripts_path}/nfs-userdata.sh", {
+            nfs_mount_point = var.ec2_nfs_mount_point
+            nfs_server_ip = self.private_ip
+        })
+    )
 }
 
 

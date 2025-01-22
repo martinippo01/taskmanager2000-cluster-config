@@ -96,4 +96,24 @@ resource "aws_vpc_security_group_ingress_rule" "sg_ec2_ingress_nfs_mount_udp" {
     to_port = 111
 }
 
+resource "aws_security_group" "sg_vpc_endpoint" {
+    depends_on = [ aws_vpc.vpc ]
+
+    name = "${var.vpc_name}-sg-vpc-endpoint"
+    description = "Allow all internal traffic to VPC endpoint"
+    vpc_id = aws_vpc.vpc.id
+
+    tags = {
+      Name = "${var.vpc_name}-sg-vpc-endpoint"
+    }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "sg_vpc_endpoint_ingress" {
+    depends_on = [ aws_security_group.sg_vpc_endpoint, aws_vpc.vpc ]
+
+    security_group_id = aws_security_group.sg_vpc_endpoint.id
+    description = "Allow all internal traffic to VPC endpoint"
+    cidr_ipv4 = aws_vpc.vpc.cidr_block
+    ip_protocol = "-1"  
+}
 

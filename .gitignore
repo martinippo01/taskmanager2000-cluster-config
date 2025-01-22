@@ -9,6 +9,10 @@
 # Local .terraform directories
 **/.terraform/*
 
+# .tfvars file that are used to override default values with environment-specific configuration.
+# This is useful for keeping sensitive information such as credentials or connection strings out of your .tf files.
+*.tfvars
+
 # .tfstate files
 *.tfstate
 *.tfstate.*

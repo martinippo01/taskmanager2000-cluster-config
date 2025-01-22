@@ -1,3 +1,8 @@
+resource "aws_iam_instance_profile" "pipeline_instance_profile" {
+    name = "ec2_instance_profile"
+    role = data.aws_iam_role.labrole.name
+}
+
 resource "aws_instance" "pipeline" {
     depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress, aws_subnet.subnet-public ]
 
@@ -12,7 +17,16 @@ resource "aws_instance" "pipeline" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
+    iam_instance_profile = aws_iam_instance_profile.pipeline_instance_profile.name
+
     tags = {
-        Name = "${var.vpc_name}-pipeline"
+        Name = "${var.vpc_name}-ec2-pipeline"
     }  
+
+    user_data = base64encode(
+        templatefile("${local.scripts_path}/pipeline-userdata.sh", {
+            auth_token = var.pipeline_auth_token,
+            gitlab_runner_cache_bucket_name = var.s3_pipeline_cache_bucket_name
+        })
+    )
 }

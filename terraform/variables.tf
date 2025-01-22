@@ -63,3 +63,15 @@ variable "ec2_nfs_mount_point" {
     type = string
     default     = "/mnt/nfs"
 }
+
+variable "pipeline_auth_token" {
+    description = "Authentication token for the GitLab pipeline runner"
+    type = string  
+}
+
+variable "s3_pipeline_cache_bucket_name" {
+    description = "Name of the S3 bucket for the pipeline cache"
+    type = string
+    default     = "my-pipeline-cache"
+  
+}
