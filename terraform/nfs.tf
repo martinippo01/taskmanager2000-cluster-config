@@ -1,12 +1,13 @@
 resource "aws_instance" "nfs" {
-    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress_nfs, aws_subnet.subnet-public ]
+    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress_nfs, aws_subnet.subnet-public, aws_security_group.sg_ssh_my_ip ]
 
     ami = local.ec2_ami
     instance_type = var.ec2_nfs_instance_type
     key_name = aws_key_pair.ec2_key.key_name
     vpc_security_group_ids = [
         aws_security_group.sg_ec2_egress.id,
-        aws_security_group.sg_ec2_ingress_nfs.id
+        aws_security_group.sg_ec2_ingress_nfs.id,
+        aws_security_group.sg_ssh_my_ip.id
     ]
 
     subnet_id = aws_subnet.subnet-public.id

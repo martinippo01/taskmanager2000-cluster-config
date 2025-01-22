@@ -117,3 +117,26 @@ resource "aws_vpc_security_group_ingress_rule" "sg_vpc_endpoint_ingress" {
     ip_protocol = "-1"  
 }
 
+resource "aws_security_group" "sg_ssh_my_ip" {
+    depends_on = [ aws_vpc.vpc ]
+
+    name = "${var.vpc_name}-sg-ssh-my-ip"
+    description = "Allow SSH traffic from my IP"
+    vpc_id = aws_vpc.vpc.id
+
+    tags = {
+      Name = "${var.vpc_name}-sg-ssh-my-ip"
+    }
+} 
+
+resource "aws_vpc_security_group_ingress_rule" "sg_ssh_my_ip_ingress" {
+    depends_on = [ aws_security_group.sg_ssh_my_ip, aws_vpc.vpc ]
+
+    security_group_id = aws_security_group.sg_ssh_my_ip.id
+    description = "Allow SSH traffic from my IP"
+    cidr_ipv4 = data.http.my_ip.body
+    ip_protocol = "tcp"
+    from_port = 22
+    to_port = 22
+}
+
