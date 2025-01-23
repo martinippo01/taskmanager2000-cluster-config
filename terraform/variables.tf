@@ -58,8 +58,14 @@ variable "ec2_nfs_volume_size" {
     default     = 8
 }
 
-variable "ec2_nfs_mount_point" {
+variable "ec2_nfs_server_mount_point" {
     description = "Mount point for the NFS server"
+    type = string
+    default     = "/mnt/nfs"
+}
+
+variable "ec2_nfs_client_mount_point" {
+    description = "Mount point for the NFS client"
     type = string
     default     = "/mnt/nfs"
 }

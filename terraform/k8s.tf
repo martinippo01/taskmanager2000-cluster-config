@@ -20,7 +20,12 @@ resource "aws_instance" "ec2_k8s_master" {
     }  
 
     user_data_base64 = base64encode(
-        templatefile("${local.scripts_path}/k8s-master-userdata.sh", {})
+        templatefile("${local.scripts_path}/k8s-master-userdata.sh", {
+            nfs_mount_point = var.ec2_nfs_client_mount_point
+            user = local.ec2_user
+            nfs_server_ip = aws_instance.ec2_nfs.private_ip
+            nfs_server_mount_point = var.ec2_nfs_server_mount_point
+        })
     )
 }
 
@@ -49,6 +54,10 @@ resource "aws_instance" "ec2_k8s_workers" {
     user_data_base64 = base64encode(
         templatefile("${local.scripts_path}/k8s-worker-userdata.sh", {
             worker_id = count.index + 1
+            nfs_mount_point = var.ec2_nfs_client_mount_point
+            user = local.ec2_user
+            nfs_server_ip = aws_instance.ec2_nfs.private_ip
+            nfs_server_mount_point = var.ec2_nfs_server_mount_point
         })
     )
 }

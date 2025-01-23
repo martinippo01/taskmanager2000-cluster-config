@@ -27,8 +27,8 @@ resource "aws_instance" "nfs" {
 
     user_data_base64 = base64encode(
         templatefile("${local.scripts_path}/nfs-userdata.sh", {
-            nfs_mount_point = var.ec2_nfs_mount_point
-            nfs_server_ip = self.private_ip
+            nfs_mount_point = var.ec2_nfs_server_mount_point
+            nfs_client_ip_range = var.vpc_cidr
         })
     )
 }

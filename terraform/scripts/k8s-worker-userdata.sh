@@ -1,5 +1,6 @@
 #!/bin/bash
 
+################### Install K8s Worker Node ###################
 set -uxo pipefail
 
 # disable swap
@@ -62,3 +63,24 @@ sudo apt-get update -y
 sudo apt-mark hold kubelet kubeadm kubectl
 
 sudo hostnamectl set-hostname "worker-${worker_id}"
+
+
+################### CONNECT TO NFS SERVER ###################
+# Install the NFS client
+sudo apt-get install -y nfs-common
+
+# Create a directory to mount the NFS share
+sudo mkdir -p ${nfs_mount_point}
+
+# Change the ownership of the mounted directory
+sudo chown -R ${user}:${user} ${nfs_mount_point}
+
+# Add the NFS share to the /etc/fstab file
+# This will ensure that the NFS share is mounted automatically on boot
+echo "${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point} nfs defaults 0 0" | sudo tee -a /etc/fstab
+
+# Mount the NFS share
+sudo mount -t nfs ${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point}
+
+
+

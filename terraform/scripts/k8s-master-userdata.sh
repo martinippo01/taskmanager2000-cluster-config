@@ -1,5 +1,7 @@
 #!/bin/bash
 
+################### Install K8s Master Node ###################
+
 set -uxo pipefail
 
 # disable swap
@@ -74,3 +76,21 @@ sudo cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
 sudo chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 kubectl --kubeconfig /home/ubuntu/.kube/config apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+
+################### CONNECT TO NFS SERVER ###################
+# Install the NFS client
+sudo apt-get install -y nfs-common
+
+# Create a directory to mount the NFS share
+sudo mkdir -p ${nfs_mount_point}
+
+# Change the ownership of the mounted directory
+sudo chown -R ${user}:${user} ${nfs_mount_point}
+
+# Add the NFS share to the /etc/fstab file
+# This will ensure that the NFS share is mounted automatically on boot
+echo "${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point} nfs defaults 0 0" | sudo tee -a /etc/fstab
+
+# Mount the NFS share
+sudo mount -t nfs ${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point}

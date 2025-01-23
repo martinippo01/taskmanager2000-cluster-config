@@ -4,19 +4,26 @@
 sudo apt-get update -y && sudo apt-get upgrade -y
 
 # Install the NFS client
-sudo apt-get install nfs-common -y
-
-# Start the NFS client service
-sudo service nfs-server start
+sudo apt-get install -y nfs-kernel-server
 
 # Create a directory to mount the NFS share
 sudo mkdir -p ${nfs_mount_point}
 
-# Mount the NFS share
-sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport ${nfs_server_ip}:${nfs_mount_point} ${nfs_mount_point}
+# Allow the NFS client to access the NFS server
+sudo chown -R nobody:nogroup ${nfs_mount_point}
+sudo chmod 777 ${nfs_mount_point}
 
-# Change the ownership of the mounted directory
-sudo chown -R ubuntu:ubuntu ${nfs_mount_point}
+# Allow the NFS client to access the NFS server
+echo "${nfs_mount_point} ${nfs_client_ip_range}(rw,sync,no_subtree_check)" | sudo tee -a /etc/exports
 
-# Add the NFS share to the /etc/fstab file
-echo "${nfs_server_ip}:${nfs_mount_point} ${nfs_mount_point} nfs defaults 0 0" | sudo tee -a /etc/fstab
+# Export the NFS share
+sudo exportfs -a
+
+# Restart the NFS server
+sudo systemctl restart nfs-kernel-server
+
+# Allow the NFS client to access the NFS server through the firewall
+sudo ufw allow from ${nfs_client_ip_range} to any port nfs
+
+# Enable the NFS server to start on boot
+sudo systemctl enable nfs-kernel-server
