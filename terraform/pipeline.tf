@@ -13,7 +13,7 @@ resource "aws_instance" "pipeline" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
-    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+    # iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     tags = {
         Name = "${var.vpc_name}-ec2-pipeline"

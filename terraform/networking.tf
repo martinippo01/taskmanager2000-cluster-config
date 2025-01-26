@@ -29,7 +29,7 @@ resource "aws_route_table" "rt-public" {
     }
 
     route {
-        cidr_block = module.vpc.vpc_cidr_block
+        cidr_block = aws_vpc.vpc.cidr_block
         gateway_id = "local"
     }
 

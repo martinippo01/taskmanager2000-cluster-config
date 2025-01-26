@@ -14,22 +14,22 @@ output "ec2_k8s_workers_public_ips" {
 }
 
 output "ec2_nfs_server_public_ip" {
-  value = aws_instance.ec2_nfs_server.public_ip
+  value = aws_instance.nfs.public_ip
   description = "The public IP address of the NFS server EC2 instance"
 }
 
 output "ec2_nfs_server_private_ip" {
-  value = aws_instance.ec2_nfs_server.private_ip
+  value = aws_instance.nfs.private_ip
   description = "The private IP address of the NFS server EC2 instance"
 }
 
 output "ec2_nfs_server_dns_name" {
-  value = aws_instance.ec2_nfs_server.public_dns
+  value = aws_instance.nfs.public_dns
   description = "The public DNS name of the NFS server EC2 instance"
 }
 
 output "ec2_nfs_server_url" {
-  value = "nfs://${aws_instance.ec2_nfs_server.public_dns}/${var.ec2_nfs_server_mount_point}"
+  value = "nfs://${aws_instance.nfs.public_dns}/${var.ec2_nfs_server_mount_point}"
   description = "The NFS URL of the NFS server EC2 instance"
 }
 

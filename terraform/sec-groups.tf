@@ -134,7 +134,7 @@ resource "aws_vpc_security_group_ingress_rule" "sg_ssh_my_ip_ingress" {
 
     security_group_id = aws_security_group.sg_ssh_my_ip.id
     description = "Allow SSH traffic from my IP"
-    cidr_ipv4 = data.http.my_ip.body
+    cidr_ipv4 = "${split("\n", data.http.my_ip.response_body)[0]}/32"
     ip_protocol = "tcp"
     from_port = 22
     to_port = 22

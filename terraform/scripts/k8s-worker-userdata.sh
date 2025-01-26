@@ -28,8 +28,8 @@ EOF
 
 sudo sysctl --system
 
-export CRIO_OS="xUbuntu_22.04"
-export CRIO_VERSION="1.28"
+# export CRIO_OS="xUbuntu_22.04"
+# export CRIO_VERSION="1.28"
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
 deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/${CRIO_OS}/ /
@@ -56,7 +56,7 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-1-28-apt-keyring.gpg] https://
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-1-29-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-1-29-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes-1.29.list
 
-export KUBERNETES_VERSION="1.29.0-1.1"
+# export KUBERNETES_VERSION="1.29.0-1.1"
 sudo apt-get update -y
 sudo apt-get install -y kubelet="${KUBERNETES_VERSION}" kubectl="${KUBERNETES_VERSION}" kubeadm="${KUBERNETES_VERSION}"
 sudo apt-get update -y

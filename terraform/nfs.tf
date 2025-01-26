@@ -19,7 +19,7 @@ resource "aws_instance" "nfs" {
         delete_on_termination = true
     }
 
-    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+    # iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     tags = {
         Name = "${var.vpc_name}-ec2-nfs"

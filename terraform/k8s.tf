@@ -1,5 +1,5 @@
 resource "aws_instance" "ec2_k8s_master" {
-    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress, aws_subnet.subnet-public, aws_security_group.sg_ssh_my_ip ]
+    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress, aws_subnet.subnet-public, aws_security_group.sg_ssh_my_ip, aws_instance.nfs ]
 
     ami = local.ec2_ami
     instance_type = var.ec2_k8s_instance_type
@@ -13,7 +13,7 @@ resource "aws_instance" "ec2_k8s_master" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
-    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+    # iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     tags = {
         Name = "${var.vpc_name}-ec2-k8s-master"
@@ -23,14 +23,19 @@ resource "aws_instance" "ec2_k8s_master" {
         templatefile("${local.scripts_path}/k8s-master-userdata.sh", {
             nfs_mount_point = var.ec2_nfs_client_mount_point
             user = local.ec2_user
-            nfs_server_ip = aws_instance.ec2_nfs.private_ip
+            nfs_server_ip = aws_instance.nfs.private_ip
             nfs_server_mount_point = var.ec2_nfs_server_mount_point
+            CRIO_OS = local.k8s_crio_os
+            CRIO_VERSION = local.k8s_crio_version
+            KUBERNETES_VERSION = local.k8s_version
+            NODE_NAME = "master"
+            POD_NETWORK_CIDR = local.k8s_network_cidr
         })
     )
 }
 
 resource "aws_instance" "ec2_k8s_workers" {
-    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress, aws_subnet.subnet-public, aws_security_group.sg_ssh_my_ip ]
+    depends_on = [ aws_key_pair.ec2_key, aws_security_group.sg_ec2_egress, aws_security_group.sg_ec2_ingress, aws_subnet.subnet-public, aws_security_group.sg_ssh_my_ip, aws_instance.ec2_k8s_master, aws_instance.nfs ]
 
     count = var.ec2_k8s_workers_count
     ami = local.ec2_ami
@@ -45,7 +50,7 @@ resource "aws_instance" "ec2_k8s_workers" {
     subnet_id = aws_subnet.subnet-public.id
     associate_public_ip_address = true
 
-    iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+    # iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
     tags = {
         Name = "${var.vpc_name}-ec2-k8s-worker-${count.index + 1}"
@@ -56,8 +61,11 @@ resource "aws_instance" "ec2_k8s_workers" {
             worker_id = count.index + 1
             nfs_mount_point = var.ec2_nfs_client_mount_point
             user = local.ec2_user
-            nfs_server_ip = aws_instance.ec2_nfs.private_ip
+            nfs_server_ip = aws_instance.nfs.private_ip
             nfs_server_mount_point = var.ec2_nfs_server_mount_point
+            CRIO_OS = local.k8s_crio_os
+            CRIO_VERSION = local.k8s_crio_version
+            KUBERNETES_VERSION = local.k8s_version
         })
     )
 }

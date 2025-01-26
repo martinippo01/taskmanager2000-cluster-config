@@ -26,7 +26,7 @@ cp docker-machine-Linux-x86_64 /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
 
 # Register the Runner
-docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register \
+sudo docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register \
     --non-interactive \
     --executor "docker+machine" \
     --docker-image "docker:stable" \
