@@ -40,11 +40,11 @@ variable "ec2_k8s_workers_count" {
     default     = 2  
 }
 
-variable "ec2_pipeline_instance_type" {
-    description = "Instance type for the EC2 instance"
-    type = string
-    default     = "t2.micro"  
-}
+# variable "ec2_pipeline_instance_type" {
+#     description = "Instance type for the EC2 instance"
+#     type = string
+#     default     = "t2.micro"  
+# }
 
 variable "ec2_nfs_instance_type" {
     description = "Instance type for the EC2 instance"
@@ -70,14 +70,14 @@ variable "ec2_nfs_client_mount_point" {
     default     = "/mnt/nfs"
 }
 
-variable "pipeline_auth_token" {
-    description = "Authentication token for the GitLab pipeline runner"
-    type = string  
-}
+# variable "pipeline_auth_token" {
+#     description = "Authentication token for the GitLab pipeline runner"
+#     type = string  
+# }
 
-variable "s3_pipeline_cache_bucket_name" {
-    description = "Name of the S3 bucket for the pipeline cache"
-    type = string
-    default     = "my-pipeline-cache"
+# variable "s3_pipeline_cache_bucket_name" {
+#     description = "Name of the S3 bucket for the pipeline cache"
+#     type = string
+#     default     = "my-pipeline-cache"
   
-}
+# }

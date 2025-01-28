@@ -1,7 +1,7 @@
-output "ec2_pipeline_public_ip" {
-  value = aws_instance.pipeline.public_ip
-  description = "The public IP address of the pipeline EC2 instance"
-}
+# output "ec2_pipeline_public_ip" {
+#   value = aws_instance.pipeline.public_ip
+#   description = "The public IP address of the pipeline EC2 instance"
+# }
 
 output "ec2_k8s_master_public_ip" {
   value = aws_instance.ec2_k8s_master.public_ip
