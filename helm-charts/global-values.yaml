@@ -3,6 +3,9 @@ namespace: default
 image:
   repository: # TODO: Create public docker hub repository
 
+nfs:
+  path: /mnt/nfs
+
 kafka-queue:
   brokers: kafka-queue:30000
   username: kafka-user
@@ -10,6 +13,9 @@ kafka-queue:
 
 wf-execution-queue:
   topic: wf-execution-queue
+
+step-schedule-queue:
+  topic: step-schedule-queue
 
 hc:
   cacheTtl: 300
@@ -19,3 +25,9 @@ wf-manager:
     type: ClusterIP
     port: 10000
     portName: wf-manager-service-port
+
+orquestador:
+  service:
+    type: ClusterIP
+    port: 10001
+    portName: orquestador-service-port

@@ -12,4 +12,4 @@ data:
   KAFKA_USERNAME: {{ .Values.kafka-queue.username }}
   KAFKA_PASSWORD: {{ .Values.kafka-queue.password }}
   KAFKA_TOPIC: {{ .Values.wf-execution-queue.topic }}
-  KAFKA_CLIENT_ID: {{ .Values.wf-execution-queue.clientId }}
+  KAFKA_CLIENT_ID_PREFIX: {{ .Values.wf-execution-queue.clientId }}

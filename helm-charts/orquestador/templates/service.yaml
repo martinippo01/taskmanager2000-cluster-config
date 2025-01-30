@@ -6,11 +6,11 @@ metadata:
     {{- toYaml .Values.labels | nindent 4 }}
   namespace: {{ .Values.namespace }}
 spec:
-  type: {{ .Values.wf-manager.service.type }}
+  type: {{ .Values.orquestador.service.type }}
   ports:
-    - port: {{ .Values.wf-manager.service.port }}
+    - port: {{ .Values.orquestador.service.port }}
       targetPort: {{ .Values.container.portName }}
       protocol: TCP
-      name: {{ .Values.wf-manager.service.portName }}
+      name: {{ .Values.orquestador.service.portName }}
   selector:
     {{- toYaml .Values.labels | nindent 4 }}

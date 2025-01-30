@@ -1,0 +1,43 @@
+configMapName: orquestador-config
+
+namespace: orquestador
+
+fullname: orquestador
+
+container:
+  port: 3000
+  portName: orquestador-container-port
+
+step-schedule-queue:
+  clientId: orquestador
+
+wf-execution-queue:
+  clientId: orquestador
+  groupId: orquestador
+
+wf-execution-db:
+  host: wf-execution-db
+  port: 20001
+  username: user
+  password: pass
+  name: wf-execution
+  sync: false
+
+labels:
+  app: orquestador
+
+image:
+  name: orquestador
+  tag: 1.0.0 # This is the image tag (must be overridden in the ci/cd pipeline with --set image.tag=[IMAGE_TAG])
+
+livenessProbe:
+  httpGet:
+    path: / # TODO: Healthcheck
+    port: orquestador-container-port
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: orquestador-container-port
+
+replicaCount: 3

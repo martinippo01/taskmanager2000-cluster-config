@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMapName }}
+  namespace: {{ .Values.namespace }}
+data:
+  PORT: {{ .Values.container.port }}
+  HC_CACHE_TTL: {{ .Values.hc.cacheTtl }}
+
+  KAFKA_BROKERS_SSR: {{ .Values.kafka-queue.brokers }}
+  KAFKA_USERNAME_SSR: {{ .Values.kafka-queue.username }}
+  KAFKA_PASSWORD_SSR: {{ .Values.kafka-queue.password }}
+  KAFKA_CLIENT_ID_SSR_PREFIX: {{ .Values.step-schedule-queue.clientId }}
+  KAFKA_TOPIC_SSR: {{ .Values.step-schedule-queue.topic }}
+
+  KAFKA_BROKERS_WER: {{ .Values.kafka-queue.brokers }}
+  KAFKA_USERNAME_WER: {{ .Values.kafka-queue.username }}
+  KAFKA_PASSWORD_WER: {{ .Values.kafka-queue.password }}
+  KAFKA_CLIENT_ID_WER_PREFIX: {{ .Values.wf-execution-queue.clientId }}
+  KAFKA_GROUP_ID_WER: {{ .Values.wf-execution-queue.groupId }}
+  KAFKA_TOPIC_WER: {{ .Values.wf-execution-queue.topic }}
+
+  DB_HOST: {{ .Values.wf-execution-db.host }}
+  DB_PORT: {{ .Values.wf-execution-db.port }}
+  DB_USERNAME: {{ .Values.wf-execution-db.username }}
+  DB_PASSWORD: {{ .Values.wf-execution-db.password }}
+  DB_NAME: {{ .Values.wf-execution-db.name }}
+  TYPEORM_SYNC: {{ .Values.wf-execution-db.sync }}
+
+  NFS_PATH: {{ .Values.nfs.path }}
+
+  # TODO: Env vars for step response missing

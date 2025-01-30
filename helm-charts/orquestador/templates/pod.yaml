@@ -22,9 +22,14 @@ spec:
         name: {{ .Values.configMapName }}
   env:
     - name: POD_UID
+      # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#use-pod-fields-as-values-for-environment-variables
       valueFrom:
         fieldRef:
           fieldPath: metadata.uid
-    - name: KAFKA_CLIENT_ID
-      value: "$(KAFKA_CLIENT_ID_PREFIX)-$(POD_UID)"
-
+    - name: KAFKA_CLIENT_ID_SSR
+      # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
+      value: "$(KAFKA_CLIENT_ID_SSR_PREFIX)-$(POD_UID)"
+    - name: KAFKA_CLIENT_ID_WER
+      value: "$(KAFKA_CLIENT_ID_WER_PREFIX)-$(POD_UID)"
+    
+    
