@@ -1,0 +1,6 @@
+// ¿Que necesitamos?
+// Un pod para el microservicio
+// Un deployment para el pod
+// Un service para el deployment
+// Conectarse a la cola de kafka
+// Conectarse al task service

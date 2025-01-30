@@ -31,3 +31,12 @@ orquestador:
     type: ClusterIP
     port: 10001
     portName: orquestador-service-port
+
+scheduler:
+  service:
+    type: ClusterIP
+    port: 10002
+    portName: scheduler-service-port
+
+task-service:
+  url: # TO BE DEFINED

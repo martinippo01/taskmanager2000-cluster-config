@@ -1,0 +1,32 @@
+configMapName: scheduler-config
+
+namespace: scheduler
+
+fullname: scheduler
+
+container:
+  port: 3000
+  portName: scheduler-container-port
+
+step-schedule-queue:
+  clientId: scheduler
+  groupId: scheduler
+
+labels:
+  app: scheduler
+
+image:
+  name: scheduler
+  tag: 1.0.0 # This is the image tag (must be overridden in the ci/cd pipeline with --set image.tag=[IMAGE_TAG])
+
+livenessProbe:
+  httpGet:
+    path: / # TODO: Healthcheck
+    port: orquestador-container-port
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: orquestador-container-port
+
+replicaCount: 3
