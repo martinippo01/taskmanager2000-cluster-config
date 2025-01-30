@@ -1,0 +1,21 @@
+# This is the configuration file for the kafka service
+# It should be used when the kafka chart is installed
+
+common:
+  names:
+    namespace: default
+
+service:
+  type: ClusterIP
+  ports:
+    client: 9092
+
+listeners:
+  client:
+    protocol: SASL_PLAINTEXT
+
+sasl:
+  client:
+    users: ["kafka-user"]
+    passwords: ["kafka-password"]
+    

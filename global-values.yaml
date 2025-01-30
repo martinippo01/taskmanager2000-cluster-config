@@ -1,0 +1,21 @@
+namespace: default
+
+image:
+  repository: registry.gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000/
+  registry:
+    secret: regcred
+
+wf-execution-queue-config:
+  brokers: my-kafka:9092
+  username: kafka-user
+  password: kafka-password
+  topic: wf-execution-queue
+
+hc:
+  cacheTtl: 300
+
+wf-manager:
+  service:
+    type: ClusterIP
+    port: 10000
+    portName: wf-manager-service-port
