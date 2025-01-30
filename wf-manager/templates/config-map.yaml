@@ -8,18 +8,8 @@ data:
   HC_CACHE_TTL: {{ .Values.hc.cacheTtl }}
   REDIS_HOST: {{ .Values.redis.host }}
   REDIS_PORT: {{ .Values.redis.port }}
-  KAFKA_BROKERS: {{ .Values.wf-execution-queue-config.brokers }}
-  KAFKA_USERNAME: {{ .Values.wf-execution-queue-config.username }}  # probar con user o user1
-  KAFKA_PASSWORD: {{ .Values.wf-execution-queue-config.password }} # probar con "" o 8rHNcHPy0p
-  KAFKA_TOPIC: {{ .Values.wf-execution-queue-config.topic }}
-  KAFKA_CLIENT_ID: {{ .Values.wf-execution-queue-config.clientId }}
-
-
-
-
-
-  # "my-kafka:9092"
-  # KAFKA_USERNAME: "user1"  # probar con user o user1
-  # KAFKA_PASSWORD: "8rHNcHPy0p" # probar con "" o 8rHNcHPy0p
-  # KAFKA_TOPIC: "wf-manager-topic"
-  # KAFKA_CLIENT_ID: "wf-manager"
+  KAFKA_BROKERS: {{ .Values.kafka-queue.brokers }}
+  KAFKA_USERNAME: {{ .Values.kafka-queue.username }}
+  KAFKA_PASSWORD: {{ .Values.kafka-queue.password }}
+  KAFKA_TOPIC: {{ .Values.wf-execution-queue.topic }}
+  KAFKA_CLIENT_ID: {{ .Values.wf-execution-queue.clientId }}

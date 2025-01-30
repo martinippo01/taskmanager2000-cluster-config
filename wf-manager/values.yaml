@@ -1,5 +1,7 @@
 configMapName: wf-manager-config
 
+namespace: wf-manager
+
 fullname: wf-manager
 
 container:
@@ -10,7 +12,7 @@ redis:
   host: wf-redis-master # This depends on the redis chart installation name (helm install <name> bitnami/redis, where <name> is 'wf-redis')
   port: 20000
 
-wf-execution-queue-config:
+wf-execution-queue:
   clientId: wf-manager
 
 labels:

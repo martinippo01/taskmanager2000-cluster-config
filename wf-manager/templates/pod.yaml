@@ -13,8 +13,6 @@ spec:
         - name: {{ .Values.container.portName }}
           containerPort: {{ .Values.container.port }}
           protocol: TCP
-  imagePullSecrets:
-    - name: {{ .Values.image.registry.secret }}
   livenessProbe:
     {{- toYaml .Values.livenessProbe | nindent 12 }}
   readinessProbe:
