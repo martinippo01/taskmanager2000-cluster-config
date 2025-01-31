@@ -1,0 +1,42 @@
+releases:
+
+  - name: orquestador
+    chart: ./charts/orquestador
+    version: 0.1.0
+    values:
+      - ./charts/values.yaml
+
+  - name: scheduler
+    chart: ./charts/scheduler
+    version: 0.1.0
+    values:
+      - ./charts/values.yaml
+
+  - name: task-service
+    chart: ./charts/task-service
+    version: 0.1.0
+    values:
+      - ./charts/values.yaml
+
+  - name: wf-manager
+    chart: ./charts/wf-manager
+    version: 0.1.0
+    values:
+      - ./charts/values.yaml                  
+    
+  - name: kafka-queue
+    chart: bitnami/kafka
+    values:
+      - ./values-kafka.yaml
+
+  - name: redis-task-service
+    chart: bitnami/redis
+    values:
+      - ./values-redis.yaml
+
+  - name: redis-wf-manager
+    chart: bitnami/redis
+    values:
+      - ./values-redis.yaml
+
+  # TODO: Add the chart for DB and NFS services!!!
