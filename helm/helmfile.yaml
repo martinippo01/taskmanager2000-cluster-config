@@ -39,4 +39,7 @@ releases:
     values:
       - ./values-redis.yaml
 
-  # TODO: Add the chart for DB and NFS services!!!
+  # TODO: Add the chart for 
+  #   - DB for orquestador
+  #   - NFS
+  #   - Each Task service
