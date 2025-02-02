@@ -1,7 +1,25 @@
 stages:
-  - hello
+  - terraform
+  - connect-to-cluster
+  - set-cluster-ip
+  - trigger-deployment
 
-hello-world-job:
-  stage: hello
+terraform-job:
+  stage: terraform
   script:
-    - echo "Hello, World!"
+    - echo "terraform init, apply and stuff"
+    
+connect-to-cluster-job:
+  stage: connect-to-cluster
+  script:
+    - echo "Connecting to the cluster"
+
+set-cluster-ip-job:
+  stage: set-cluster-ip
+  script:
+    - echo "Setting the cluster IP"
+
+trigger-deployment-job:
+  stage: trigger-deployment
+  script:
+    - echo "Triggering the deployment"
