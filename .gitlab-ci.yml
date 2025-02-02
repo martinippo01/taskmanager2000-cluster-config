@@ -6,7 +6,7 @@ stages:
 
 terraform-job:
   stage: terraform
-  image: hashicorp/terraform:light  # or use a more complete image like 'hashicorp/terraform:1.4.6'
+  image: hashicorp/terraform:latest
   before_script:
     - apk add --no-cache bash curl  # Installs bash and curl if using Alpine-based images
   script:
