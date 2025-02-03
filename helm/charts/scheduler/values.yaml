@@ -21,12 +21,12 @@ image:
 
 livenessProbe:
   httpGet:
-    path: / # TODO: Healthcheck
+    path: /ping
     port: orquestador-container-port
 
 readinessProbe:
   httpGet:
-    path: /
+    path: /ping
     port: orquestador-container-port
 
 replicaCount: 3

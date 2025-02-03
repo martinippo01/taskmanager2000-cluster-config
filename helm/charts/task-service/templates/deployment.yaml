@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fullname }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.labels.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.app }}
+    spec:
+      containers:
+        - name: {{ .Values.fullname }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          ports:
+            - name: {{ .Values.container.portName }}
+              containerPort: {{ .Values.container.port }}
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: REDIS_PORT
+            - name: HC_CACHE_TTL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: HC_CACHE_TTL
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.httpGet.path }}
+              port: {{ .Values.livenessProbe.httpGet.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.httpGet.path }}
+              port: {{ .Values.readinessProbe.httpGet.port }}

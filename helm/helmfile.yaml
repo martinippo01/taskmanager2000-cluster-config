@@ -31,11 +31,13 @@ releases:
 
   - name: redis-task-service
     chart: bitnami/redis
+    namespace: task-service
     values:
       - ./values-redis.yaml
 
   - name: redis-wf-manager
     chart: bitnami/redis
+    namespace: wf-manager
     values:
       - ./values-redis.yaml
 

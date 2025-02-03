@@ -24,12 +24,12 @@ image:
 
 livenessProbe:
   httpGet:
-    path: /workflows
+    path: /ping
     port: wf-manager-container-port
 
 readinessProbe:
   httpGet:
-    path: /workflows
+    path: /ping
     port: wf-manager-container-port
 
 replicaCount: 3

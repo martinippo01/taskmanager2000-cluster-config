@@ -1,0 +1,31 @@
+configMapName: task-service-config
+
+namespace: task-service
+
+fullname: task-service
+
+container:
+  port: 3000
+  portName: ts-cont-port
+
+step-schedule-queue:
+  clientId: task-service
+
+labels:
+  app: task-service
+
+image:
+  name: task-service
+  tag: 1.0.0 # This is the image tag (must be overridden in the ci/cd pipeline with --set image.tag=[IMAGE_TAG])
+
+livenessProbe:
+  httpGet:
+    path: /ping
+    port: ts-cont-port
+
+readinessProbe:
+  httpGet:
+    path: /ping
+    port: ts-cont-port
+
+replicaCount: 3 # Imagino que todas las réplicas van a estar conectadas a la misma BDD

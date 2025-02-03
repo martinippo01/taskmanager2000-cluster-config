@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMapName }}
+  namespace: {{ .Values.namespace }}
+data:
+  REDIS_HOST: "redis-{{ .Values.namespace }}-master" # Apunta al servicio!
+  REDIS_PORT: "6379"
+  HC_CACHE_TTL: "300"
