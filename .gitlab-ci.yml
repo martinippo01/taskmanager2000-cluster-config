@@ -26,18 +26,26 @@ terraform-job:
     - cd terraform
     - terraform init
     - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  only:
+    - main
     
 connect-to-cluster-job:
   stage: connect-to-cluster
   script:
     - echo "Connecting to the cluster"
+  only:
+    - main    
 
 set-cluster-ip-job:
   stage: set-cluster-ip
   script:
     - echo "Setting the cluster IP"
+  only:
+    - main    
 
 trigger-deployment-job:
   stage: trigger-deployment
   script:
     - echo "Triggering deployment"
+  only:
+    - main
