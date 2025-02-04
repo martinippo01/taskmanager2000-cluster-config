@@ -3,6 +3,7 @@ stages:
   - connect-to-cluster
   - set-cluster-ip
   - trigger-deployment
+  - destroy
 
 image: 
   name: hashicorp/terraform
@@ -26,6 +27,9 @@ terraform-job:
     - cd terraform
     - terraform init
     - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
   only:
     - main
     
@@ -49,3 +53,20 @@ trigger-deployment-job:
     - echo "Triggering deployment"
   only:
     - main
+
+terraform-destroy-job:
+  stage: destroy
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
+    - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 600 ~/.ssh/id_ed25519
+    - cd terraform
+    - terraform init
+    - terraform destroy -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+  only:
+    - main
+  when: manual
