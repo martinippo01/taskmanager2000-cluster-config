@@ -32,6 +32,8 @@ terraform-job:
     paths:
       - terraform/terraform.tfstate
       - cluster_ip.txt
+  only:
+    - main
 
 connect-to-cluster-job:
   stage: connect-to-cluster
