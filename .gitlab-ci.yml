@@ -30,7 +30,6 @@ terraform-job:
   artifacts:
     paths:
       - terraform/terraform.tfstate
-      - cluster_ip.txt
   only:
     - main
   when: manual 
