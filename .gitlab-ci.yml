@@ -80,4 +80,4 @@ terraform-destroy-job:
       - terraform/terraform.tfstate
   only:
     - main
-  when: manual
+  when: manual 
