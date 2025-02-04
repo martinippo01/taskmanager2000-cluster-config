@@ -17,9 +17,6 @@ terraform-job:
     - cd terraform
     - terraform init
     - terraform apply -auto-approve
-
-
-
     
 connect-to-cluster-job:
   stage: connect-to-cluster
