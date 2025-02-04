@@ -27,30 +27,37 @@ terraform-job:
     - cd terraform
     - terraform init
     - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+    - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
   artifacts:
     paths:
       - terraform/terraform.tfstate
-  only:
-    - main
-    
+      - cluster_ip.txt
+
 connect-to-cluster-job:
   stage: connect-to-cluster
   script:
-    - echo "Connecting to the cluster"
+    - cd terraform
+    - cat cluster_ip.txt
+  dependencies:
+    - terraform-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate\
+      - cluster_ip.txt
   only:
-    - main    
+    - main
 
 set-cluster-ip-job:
   stage: set-cluster-ip
   script:
-    - echo "Setting the cluster IP"
-  only:
-    - main    
-
-trigger-deployment-job:
-  stage: trigger-deployment
-  script:
-    - echo "Triggering deployment"
+    - cd terraform
+    - cat cluster_ip.txt
+  dependencies:
+    - connect-to-cluster-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+      - cluster_ip.txt
   only:
     - main
 
@@ -64,6 +71,8 @@ terraform-destroy-job:
     - cd terraform
     - terraform init
     - terraform destroy -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  dependencies:
+    - terraform-job
   artifacts:
     paths:
       - terraform/terraform.tfstate
