@@ -19,6 +19,7 @@ variables:
 terraform-job:
   stage: terraform
   script:
+    - mkdir -p ~/.ssh
     - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
     - chmod 600 ~/.ssh/id_ed25519
