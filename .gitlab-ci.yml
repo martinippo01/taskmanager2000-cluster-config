@@ -38,6 +38,7 @@ connect-to-cluster-job:
   stage: connect-to-cluster
   script:
     - cd terraform
+    - terraform init
     - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
     - cat cluster_ip.txt
   dependencies:
@@ -82,4 +83,4 @@ terraform-destroy-job:
       - terraform/terraform.tfstate
   only:
     - main
-  when: manual 
+  when: manual
