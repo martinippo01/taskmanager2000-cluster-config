@@ -13,10 +13,15 @@ variables:
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN
+  ENCODED_ID_ED25519: $ENCODED_ID_ED25519
+  ID_ED25519_pub: $ID_ED25519_PUB
 
 terraform-job:
   stage: terraform
   script:
+    - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
+    - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 600 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
     - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
