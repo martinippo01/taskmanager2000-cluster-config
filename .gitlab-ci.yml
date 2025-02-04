@@ -27,18 +27,19 @@ terraform-job:
     - cd terraform
     - terraform init
     - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
-    - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
   artifacts:
     paths:
       - terraform/terraform.tfstate
       - cluster_ip.txt
   only:
     - main
+  when: manual 
 
 connect-to-cluster-job:
   stage: connect-to-cluster
   script:
     - cd terraform
+    - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
     - cat cluster_ip.txt
   dependencies:
     - terraform-job
@@ -48,6 +49,7 @@ connect-to-cluster-job:
       - cluster_ip.txt
   only:
     - main
+  when: manual 
 
 set-cluster-ip-job:
   stage: set-cluster-ip
@@ -62,6 +64,7 @@ set-cluster-ip-job:
       - cluster_ip.txt
   only:
     - main
+  when: manual 
 
 terraform-destroy-job:
   stage: destroy
