@@ -6,7 +6,7 @@ fullname: wf-manager
 
 container:
   port: 3000
-  portName: wf-manager-container-port
+  portName: wf-m-cont-port
 
 redis:
   host: wf-redis-master # This depends on the redis chart installation name (helm install <name> bitnami/redis, where <name> is 'wf-redis')
@@ -25,11 +25,11 @@ image:
 livenessProbe:
   httpGet:
     path: /ping
-    port: wf-manager-container-port
+    port: wf-m-cont-port
 
 readinessProbe:
   httpGet:
     path: /ping
-    port: wf-manager-container-port
+    port: wf-m-cont-port
 
 replicaCount: 3

@@ -6,9 +6,9 @@ fullname: scheduler
 
 container:
   port: 3000
-  portName: scheduler-container-port
+  portName: sche-cont-port
 
-step-schedule-queue:
+stepschedulequeue:
   clientId: scheduler
   groupId: scheduler
 
@@ -22,11 +22,11 @@ image:
 livenessProbe:
   httpGet:
     path: /ping
-    port: orquestador-container-port
+    port: sche-cont-port
 
 readinessProbe:
   httpGet:
     path: /ping
-    port: orquestador-container-port
+    port: sche-cont-port
 
 replicaCount: 3

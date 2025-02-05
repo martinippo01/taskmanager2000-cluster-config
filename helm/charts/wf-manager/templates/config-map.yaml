@@ -4,12 +4,12 @@ metadata:
   name: {{ .Values.configMapName }}  # Este es el nombre que va a haber que referenciar
   namespace: {{ .Values.namespace }}
 data:
-  PORT: {{ .Values.container.port }}
-  HC_CACHE_TTL: {{ .Values.hc.cacheTtl }}
+  PORT: "{{ .Values.container.port }}"
+  HC_CACHE_TTL: "{{ .Values.hc.cacheTtl }}"
   REDIS_HOST: {{ .Values.redis.host }}
-  REDIS_PORT: {{ .Values.redis.port }}
-  KAFKA_BROKERS: {{ .Values.kafka-queue.brokers }}
-  KAFKA_USERNAME: {{ .Values.kafka-queue.username }}
-  KAFKA_PASSWORD: {{ .Values.kafka-queue.password }}
-  KAFKA_TOPIC: {{ .Values.wf-execution-queue.topic }}
-  KAFKA_CLIENT_ID_PREFIX: {{ .Values.wf-execution-queue.clientId }}
+  REDIS_PORT: "{{ .Values.redis.port }}"
+  KAFKA_BROKERS: {{ .Values.kafkaqueue.brokers }}
+  KAFKA_USERNAME: {{ .Values.kafkaqueue.username }}
+  KAFKA_PASSWORD: {{ .Values.kafkaqueue.password }}
+  KAFKA_TOPIC: {{ .Values.wfexecutionqueue.topic }}
+  KAFKA_CLIENT_ID_PREFIX: {{ .Values.wfexecutionqueue.clientId }}

@@ -4,14 +4,14 @@ metadata:
   name: {{ .Values.configMapName }}  # Este es el nombre que va a haber que referenciar
   namespace: {{ .Values.namespace }}
 data:
-  PORT: {{ .Values.container.port }}
-  HC_CACHE_TTL: {{ .Values.hc.cacheTtl }}
+  PORT: "{{ .Values.container.port }}"
+  HC_CACHE_TTL: "{{ .Values.hc.cacheTtl }}"
 
-  KAFKA_BROKERS_SSR: {{ .Values.kafka-queue.brokers }}
-  KAFKA_USERNAME_SSR: {{ .Values.kafka-queue.username }}
-  KAFKA_PASSWORD_SSR: {{ .Values.kafka-queue.password }}
-  KAFKA_CLIENT_ID_SSR_PREFIX: {{ .Values.step-schedule-queue.clientId }}
-  KAFKA_GROUP_ID_SSR: {{ .Values.step-schedule-queue.groupId }}
-  KAFKA_TOPIC_SSR: {{ .Values.step-schedule-queue.topic }}
+  KAFKA_BROKERS_SSR: {{ .Values.kafkaqueue.brokers }}
+  KAFKA_USERNAME_SSR: {{ .Values.kafkaqueue.username }}
+  KAFKA_PASSWORD_SSR: {{ .Values.kafkaqueue.password }}
+  KAFKA_CLIENT_ID_SSR_PREFIX: {{ .Values.stepschedulequeue.clientId }}
+  KAFKA_GROUP_ID_SSR: {{ .Values.stepschedulequeue.groupId }}
+  KAFKA_TOPIC_SSR: {{ .Values.stepschedulequeue.topic }}
 
-  TASK_SERVICE_URL: {{ .Values.task-service.url }}
+  TASK_SERVICE_URL: {{ .Values.taskservice.service.portName }}

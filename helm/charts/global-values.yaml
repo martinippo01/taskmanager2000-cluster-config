@@ -1,26 +1,24 @@
-namespace: default
-
-image:
-  repository: # TODO: Create public docker hub repository
+#image:
+#  repository: # TODO: Create public docker hub repository
 
 nfs:
   path: /mnt/nfs
 
-kafka-queue:
+kafkaqueue:
   brokers: kafka-queue:30000
   username: kafka-user
   password: kafka-password
 
-wf-execution-queue:
+wfexecutionqueue:
   topic: wf-execution-queue
 
-step-schedule-queue:
+stepschedulequeue:
   topic: step-schedule-queue
 
 hc:
   cacheTtl: 300
 
-wf-manager:
+wfmanager:
   service:
     type: ClusterIP
     port: 10000
@@ -36,7 +34,10 @@ scheduler:
   service:
     type: ClusterIP
     port: 10002
-    portName: scheduler-service-port
+    portName: sche-serv-port
 
-task-service:
-  url: # TO BE DEFINED
+taskservice:
+  service:
+    type: ClusterIP
+    port: 10003
+    portName: ts-cont-port

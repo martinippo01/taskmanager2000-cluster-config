@@ -6,16 +6,16 @@ fullname: orquestador
 
 container:
   port: 3000
-  portName: orquestador-container-port
+  portName: orq-cont-port
 
-step-schedule-queue:
+stepschedulequeue:
   clientId: orquestador
 
-wf-execution-queue:
+wfexecutionqueue:
   clientId: orquestador
   groupId: orquestador
 
-wf-execution-db:
+wfexecutiondb:
   host: wf-execution-db
   port: 20001
   username: user
@@ -33,11 +33,11 @@ image:
 livenessProbe:
   httpGet:
     path: /ping
-    port: orquestador-container-port
+    port: orq-cont-port
 
 readinessProbe:
   httpGet:
-    path: /
-    port: orquestador-container-port
+    path: /ping
+    port: orq-cont-port
 
 replicaCount: 3
