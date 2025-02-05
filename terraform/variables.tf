@@ -81,3 +81,18 @@ variable "ec2_nfs_client_mount_point" {
 #     default     = "my-pipeline-cache"
   
 # }
+
+variable "aws_access_key_id" {
+  description = "AWS access key ID"
+  type = string
+}
+
+variable "aws_secret_access_key" {
+  description = "AWS secret access key"
+  type = string
+}
+
+variable "aws_session_token" {
+  description = "AWS session token"
+  type = string
+}

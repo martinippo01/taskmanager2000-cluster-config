@@ -3,38 +3,84 @@ stages:
   - connect-to-cluster
   - set-cluster-ip
   - trigger-deployment
+  - destroy
+
+image: 
+  name: hashicorp/terraform
+  entrypoint: [""]
+
+variables:
+  TF_LOG: DEBUG
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN
+  ENCODED_ID_ED25519: $ENCODED_ID_ED25519
+  ID_ED25519_pub: $ID_ED25519_PUB
 
 terraform-job:
   stage: terraform
-  image: alpine:latest
-  before_script:
-    - apk add --no-cache bash curl
-    - curl -fsSL https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_amd64.zip -o terraform.zip
-    - unzip terraform.zip
-    - mv terraform /usr/local/bin/
-    - terraform version
   script:
-    - export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
-    - export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
-    - export AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN"
+    - mkdir -p ~/.ssh
+    - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
+    - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 600 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
-    - terraform apply -auto-approve
+    - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+  only:
+    - main
+  when: manual 
 
-
-
-    
 connect-to-cluster-job:
   stage: connect-to-cluster
   script:
-    - echo "Connecting to the cluster"
+    - cd terraform
+    - terraform init
+    - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
+    - cat cluster_ip.txt
+  dependencies:
+    - terraform-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate\
+      - cluster_ip.txt
+  only:
+    - main
+  when: manual 
 
 set-cluster-ip-job:
   stage: set-cluster-ip
   script:
-    - echo "Setting the cluster IP"
+    - cd terraform
+    - cat cluster_ip.txt
+  dependencies:
+    - connect-to-cluster-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+      - cluster_ip.txt
+  only:
+    - main
+  when: manual 
 
-trigger-deployment-job:
-  stage: trigger-deployment
+terraform-destroy-job:
+  stage: destroy
   script:
-    - echo "Triggering the deployment"
+    - mkdir -p ~/.ssh
+    - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
+    - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 600 ~/.ssh/id_ed25519
+    - cd terraform
+    - terraform init
+    - terraform destroy -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+  dependencies:
+    - terraform-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+  only:
+    - main
+  when: manual

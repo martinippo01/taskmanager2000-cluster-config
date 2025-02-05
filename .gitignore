@@ -46,3 +46,8 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/helm,terraform
+
+# Preventing me to push a freaking private key
+encoded_id_ed25519.txt
+id_ed25519
+id_ed25519.pub
