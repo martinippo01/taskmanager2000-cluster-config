@@ -16,11 +16,10 @@ wfexecutionqueue:
   groupId: orquestador
 
 wfexecutiondb:
-  host: wf-execution-db
-  port: 20001
-  username: user
-  password: pass
-  name: wf-execution
+  port: 5432
+  username: postgres
+  password: password
+  name: wf-execution-db
   sync: false
 
 labels:

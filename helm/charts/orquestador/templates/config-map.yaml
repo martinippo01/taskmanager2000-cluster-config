@@ -20,12 +20,12 @@ data:
   KAFKA_GROUP_ID_WER: {{ .Values.wfexecutionqueue.groupId }}
   KAFKA_TOPIC_WER: {{ .Values.wfexecutionqueue.topic }}
 
-  DB_HOST: {{ .Values.wfexecutiondb.host }}
+  DB_HOST: "{{ .Values.wfexecutiondb.name }}-postgresql"
   DB_PORT: "{{ .Values.wfexecutiondb.port }}"
   DB_USERNAME: {{ .Values.wfexecutiondb.username }}
   DB_PASSWORD: {{ .Values.wfexecutiondb.password }}
   DB_NAME: {{ .Values.wfexecutiondb.name }}
-  TYPEORM_SYNC: {{ .Values.wfexecutiondb.sync }}
+  TYPEORM_SYNC: "{{ .Values.wfexecutiondb.sync }}"
 
   NFS_PATH: {{ .Values.nfs.path }}
 

@@ -41,7 +41,24 @@ releases:
     values:
       - ./values-redis.yaml
 
+  - name: wf-execution-db
+  chart: bitnami/postgresql
+  version: 10.0.0
+  values:
+    - auth:
+        username: "postgres"
+        password: "password"
+        database: "wf-execution-db"
+      primary:
+        service:
+          type: ClusterIP
+          ports:
+            postgresql: 5432
+          nodePorts:
+            postgresql: 5432
+      persistence:
+        enabled: false
+
   # TODO: Add the chart for 
-  #   - DB for orquestador
   #   - NFS
-  #   - Each Task service
+  #   - Each Task agent
