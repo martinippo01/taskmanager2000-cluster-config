@@ -2,49 +2,57 @@ releases:
 
   - name: orquestador
     chart: ./charts/orquestador
-    version: 0.1.0
+    version: 1.0.0
     values:
-      - ./charts/values.yaml
+      - ./charts/orquestador/values.yaml
+      - ./global-values.yaml
 
   - name: scheduler
     chart: ./charts/scheduler
-    version: 0.1.0
+    version: 1.0.0
     values:
-      - ./charts/values.yaml
+      - ./charts/scheduler/values.yaml
+      - ./global-values.yaml
 
   - name: task-service
     chart: ./charts/task-service
-    version: 0.1.0
+    version: 1.0.0
     values:
-      - ./charts/values.yaml
+      - ./charts/task-service/values.yaml
+      - ./global-values.yaml
 
   - name: wf-manager
     chart: ./charts/wf-manager
-    version: 0.1.0
+    version: 1.0.0
     values:
-      - ./charts/values.yaml                  
-    
+      - ./charts/wf-manager/values.yaml
+      - ./global-values.yaml
+
   - name: kafka-queue
     chart: bitnami/kafka
+    version: 1.0.0
     values:
       - ./values-kafka.yaml
 
   - name: redis-task-service
     chart: bitnami/redis
+    version: 1.0.0
     namespace: task-service
     values:
       - ./values-redis.yaml
 
   - name: redis-wf-manager
     chart: bitnami/redis
+    version: 1.0.0
     namespace: wf-manager
     values:
       - ./values-redis.yaml
 
   - name: wf-execution-db
-  chart: bitnami/postgresql
-  version: 10.0.0
-  values:
+    chart: bitnami/postgresql
+    version: 10.0.0
+    namespace: wf-execution
+    values:
     - auth:
         username: "postgres"
         password: "password"
