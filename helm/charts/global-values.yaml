@@ -5,9 +5,10 @@ nfs:
   path: /mnt/nfs
 
 kafkaqueue:
-  brokers: kafka-queue:30000
-  username: kafka-user
-  password: kafka-password
+  consumerBrokers: kafka.default.svc.cluster.local:9092
+  producerBrokers: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092
+  username: your-username
+  password: your-password
 
 wfexecutionqueue:
   topic: wf-execution-queue

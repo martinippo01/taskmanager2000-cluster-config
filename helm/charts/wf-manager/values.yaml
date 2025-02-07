@@ -9,10 +9,9 @@ container:
   portName: wf-m-cont-port
 
 redis:
-  host: wf-redis-master # This depends on the redis chart installation name (helm install <name> bitnami/redis, where <name> is 'wf-redis')
-  port: 20000
+  port: 6379
 
-wf-execution-queue:
+wfexecutionqueue:
   clientId: wf-manager
 
 labels:

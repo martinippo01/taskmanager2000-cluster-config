@@ -28,12 +28,6 @@ releases:
       - ./charts/wf-manager/values.yaml
       - ./global-values.yaml
 
-  - name: kafka-queue
-    chart: bitnami/kafka
-    version: 1.0.0
-    values:
-      - ./values-kafka.yaml
-
   - name: redis-task-service
     chart: bitnami/redis
     version: 1.0.0
@@ -67,6 +61,15 @@ releases:
       persistence:
         enabled: false
 
+    - name: kafka
+    chart: bitnami/kafka
+    values:
+      - sasl:
+          client:
+            users: 
+              - "your-username"
+            passwords:
+              - "your-password"
   # TODO: Add the chart for 
   #   - NFS
   #   - Each Task agent

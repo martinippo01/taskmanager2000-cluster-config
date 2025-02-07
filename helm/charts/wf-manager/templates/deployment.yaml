@@ -6,6 +6,8 @@ metadata:
     {{- toYaml .Values.labels | nindent 4 }}
   namespace: {{ .Values.namespace }}
 spec:
+  strategy: 
+    type: Recreate
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -35,4 +37,4 @@ spec:
                 fieldRef:
                   fieldPath: metadata.uid
             - name: KAFKA_CLIENT_ID
-              value: "$(KAFKA_CLIENT_ID_PREFIX)-$(POD_UID)"
+              value: "{{ .Values.wfexecutionqueue.clientId }}-$(POD_UID)"

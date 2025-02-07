@@ -6,9 +6,9 @@ metadata:
 data:
   PORT: "{{ .Values.container.port }}"
   HC_CACHE_TTL: "{{ .Values.hc.cacheTtl }}"
-  REDIS_HOST: {{ .Values.redis.host }}
+  REDIS_HOST: "redis-{{ .Values.namespace }}-master" # Apunta al servicio!
   REDIS_PORT: "{{ .Values.redis.port }}"
-  KAFKA_BROKERS: {{ .Values.kafkaqueue.brokers }}
+  KAFKA_BROKERS: {{ .Values.kafkaqueue.producerBrokers }}
   KAFKA_USERNAME: {{ .Values.kafkaqueue.username }}
   KAFKA_PASSWORD: {{ .Values.kafkaqueue.password }}
   KAFKA_TOPIC: {{ .Values.wfexecutionqueue.topic }}
