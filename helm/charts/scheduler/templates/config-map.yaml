@@ -7,11 +7,17 @@ data:
   PORT: "{{ .Values.container.port }}"
   HC_CACHE_TTL: "{{ .Values.hc.cacheTtl }}"
 
-  KAFKA_BROKERS_SSR: {{ .Values.kafkaqueue.brokers }}
+  KAFKA_BROKERS_SSR: {{ .Values.kafkaqueue.consumerBrokers }}
   KAFKA_USERNAME_SSR: {{ .Values.kafkaqueue.username }}
   KAFKA_PASSWORD_SSR: {{ .Values.kafkaqueue.password }}
   KAFKA_CLIENT_ID_SSR_PREFIX: {{ .Values.stepschedulequeue.clientId }}
   KAFKA_GROUP_ID_SSR: {{ .Values.stepschedulequeue.groupId }}
   KAFKA_TOPIC_SSR: {{ .Values.stepschedulequeue.topic }}
 
-  TASK_SERVICE_URL: {{ .Values.taskservice.service.portName }}
+  KAFKA_BROKERS_SEE: {{ .Values.kafkaqueue.producerBrokers }}
+  KAFKA_CLIENT_ID_SEE_PREFIX: {{ .Values.errorschedulequeue.clientId }}
+  KAFKA_USERNAME_SEE: {{ .Values.kafkaqueue.username }}
+  KAFKA_PASSWORD_SEE: {{ .Values.kafkaqueue.password }}
+  KAFKA_TOPIC_SEE: {{ .Values.errorqueue.topic }}
+
+  TASK_SERVICE_URL: "{{ .Values.taskservice.service.name }}.{{ .Values.taskservice.namespace }}.svc.cluster.local:{{ .Values.taskservice.service.port }}"

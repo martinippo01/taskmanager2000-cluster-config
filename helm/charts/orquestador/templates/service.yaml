@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.fullname }}
+  name: {{ .Values.orquestador.service.name }}
   labels:
     {{- toYaml .Values.labels | nindent 4 }}
   namespace: {{ .Values.namespace }}

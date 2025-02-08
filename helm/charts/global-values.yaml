@@ -16,29 +16,41 @@ wfexecutionqueue:
 stepschedulequeue:
   topic: step-schedule-queue
 
+# Esta es para lo de los errores que el scheduler le pasa al orquestador
+errorqueue:
+  topic: error-queue
+
 hc:
   cacheTtl: 300
 
 wfmanager:
+  namespace: wf-manager
   service:
+    name: wf-manager
     type: ClusterIP
     port: 10000
     portName: wf-manager-service-port
 
 orquestador:
+  namespace: orquestador
   service:
+    name: orquestador
     type: ClusterIP
     port: 10001
     portName: orquestador-service-port
 
 scheduler:
+  namespace: scheduler
   service:
+    name: scheduler
     type: ClusterIP
     port: 10002
     portName: sche-serv-port
 
 taskservice:
+  namespace: task-service # Lo uso para pegarle desde Scheduler
   service:
+    name: task-service # Lo uso para pegarle desde Scheduler
     type: ClusterIP
     port: 10003
     portName: ts-cont-port

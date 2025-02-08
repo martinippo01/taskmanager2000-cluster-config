@@ -37,5 +37,8 @@ spec:
                   fieldPath: metadata.uid
             - name: KAFKA_CLIENT_ID_SSR
               # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
-              value: "$(KAFKA_CLIENT_ID_SSR_PREFIX)-$(POD_UID)"
+              value: "{{ .Values.stepschedulequeue.clientId }}-$(POD_UID)"
+            - name: KAFKA_CLIENT_ID_SEE
+              # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
+              value: "{{ .Values.errorschedulequeue.clientId }}-$(POD_UID)"
 

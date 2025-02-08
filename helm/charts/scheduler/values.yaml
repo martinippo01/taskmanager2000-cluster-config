@@ -12,6 +12,9 @@ stepschedulequeue:
   clientId: scheduler
   groupId: scheduler
 
+errorschedulequeue:
+  clientId: scheduleerror
+
 labels:
   app: scheduler
 
