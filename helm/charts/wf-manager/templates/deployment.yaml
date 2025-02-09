@@ -38,3 +38,5 @@ spec:
                   fieldPath: metadata.uid
             - name: KAFKA_CLIENT_ID
               value: "{{ .Values.wfexecutionqueue.clientId }}-$(POD_UID)"
+            - name: SERVICE_NAME
+              value: "{{ .Values.container.name }}-$(POD_UID)"

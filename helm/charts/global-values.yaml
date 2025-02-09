@@ -26,6 +26,9 @@ stepResultQueue:
 hc:
   cacheTtl: 300
 
+signoz:
+  url: # TODO: Define the URL of the signoz chart
+
 wfmanager:
   namespace: wf-manager
   service:

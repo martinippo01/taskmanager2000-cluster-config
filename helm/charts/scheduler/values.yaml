@@ -7,6 +7,7 @@ fullname: scheduler
 container:
   port: 3000
   portName: sche-cont-port
+  name: scheduler
 
 stepschedulequeue:
   clientId: scheduler

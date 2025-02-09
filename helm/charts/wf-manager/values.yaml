@@ -7,6 +7,7 @@ fullname: wf-manager
 container:
   port: 3000
   portName: wf-m-cont-port
+  name: wf-manager
 
 redis:
   port: 6379

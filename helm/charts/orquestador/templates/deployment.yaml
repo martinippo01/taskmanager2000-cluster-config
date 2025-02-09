@@ -46,3 +46,5 @@ spec:
               value: "{{ .Values.errorschedulequeue.clientId }}-$(POD_UID)"
             - name: KAFKA_CLIENT_ID_SER
               value: "{{ .Values.stepResultQueue.clientId }}-$(POD_UID)"
+            - name: SERVICE_NAME
+              value: "{{ .Values.container.name }}-$(POD_UID)"

@@ -7,3 +7,8 @@ data:
   REDIS_HOST: "redis-{{ .Values.namespace }}-master" # Apunta al servicio!
   REDIS_PORT: "6379"
   HC_CACHE_TTL: "300"
+  # Nombre del servicio, con el que se identifica en los logs
+  SERVICE_NAME_PREFIX: {{ .Values.container.name }}
+
+  # Esta es la URL al backend de observabilidad
+  SIGNOZ_URL: {{ .Values.signoz.url }}
