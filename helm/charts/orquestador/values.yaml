@@ -9,11 +9,19 @@ container:
   portName: orq-cont-port
 
 stepschedulequeue:
-  clientId: orquestador
+  clientId: orquestadorToScheduler
 
 wfexecutionqueue:
-  clientId: orquestador
-  groupId: orquestador
+  clientId: orquestadorWf
+  groupId: orquestadorWfExec
+
+errorschedulequeue:
+  clientId: scheduleerror
+  groupId: orquestadorError
+
+stepResultQueue:
+  clientId: orqResult
+  groupId: orquestadorResults
 
 wfexecutiondb:
   port: 5432
@@ -32,11 +40,18 @@ image:
 livenessProbe:
   httpGet:
     path: /ping
-    port: orq-cont-port
+    port: 3000
+  initialDelaySeconds: 10  # Wait 10 seconds before the first probe
+  periodSeconds: 5         # Check every 5 seconds
+  failureThreshold: 3      # Allow 3 failed checks before restart
 
 readinessProbe:
   httpGet:
     path: /ping
-    port: orq-cont-port
+    port: 3000
+  initialDelaySeconds: 5   # Wait 5 seconds before the first probe
+  periodSeconds: 3         # Check every 3 seconds
+  failureThreshold: 3      # Allow 3 failed checks before marking unready
+
 
 replicaCount: 3

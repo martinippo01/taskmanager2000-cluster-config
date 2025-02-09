@@ -6,7 +6,7 @@ nfs:
 
 kafkaqueue:
   consumerBrokers: kafka.default.svc.cluster.local:9092
-  producerBrokers: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-1.kafka-controller-headless.default.svc.cluster.local:9092,kafka-controller-2.kafka-controller-headless.default.svc.cluster.local:9092
+  producerBrokers: kafka-controller-headless.default.svc.cluster.local:9092
   username: your-username
   password: your-password
 
@@ -19,6 +19,9 @@ stepschedulequeue:
 # Esta es para lo de los errores que el scheduler le pasa al orquestador
 errorqueue:
   topic: error-queue
+
+stepResultQueue:
+  topic: result-queue
 
 hc:
   cacheTtl: 300

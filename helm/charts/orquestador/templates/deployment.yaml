@@ -6,6 +6,8 @@ metadata:
     {{- toYaml .Values.labels | nindent 4 }}
   namespace: {{ .Values.namespace }}
 spec:
+  strategy: 
+    type: Recreate
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -37,6 +39,10 @@ spec:
                   fieldPath: metadata.uid
             - name: KAFKA_CLIENT_ID_SSR
               # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
-              value: "$(KAFKA_CLIENT_ID_SSR_PREFIX)-$(POD_UID)"
+              value: "{{ .Values.stepschedulequeue.clientId }}-$(POD_UID)"
             - name: KAFKA_CLIENT_ID_WER
-              value: "$(KAFKA_CLIENT_ID_WER_PREFIX)-$(POD_UID)"
+              value: "{{ .Values.wfexecutionqueue.clientId }}-$(POD_UID)"
+            - name: KAFKA_CLIENT_ID_SEE
+              value: "{{ .Values.errorschedulequeue.clientId }}-$(POD_UID)"
+            - name: KAFKA_CLIENT_ID_SER
+              value: "{{ .Values.stepResultQueue.clientId }}-$(POD_UID)"

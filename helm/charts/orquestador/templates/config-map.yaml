@@ -7,18 +7,36 @@ data:
   PORT: "{{ .Values.container.port }}"
   HC_CACHE_TTL: "{{ .Values.hc.cacheTtl }}"
 
-  KAFKA_BROKERS_SSR: {{ .Values.kafkaqueue.brokers }}
+  # Este es el principal, manda steps al scheduler
+  KAFKA_BROKERS_SSR: {{ .Values.kafkaqueue.producerBrokers }}
   KAFKA_USERNAME_SSR: {{ .Values.kafkaqueue.username }}
   KAFKA_PASSWORD_SSR: {{ .Values.kafkaqueue.password }}
   KAFKA_CLIENT_ID_SSR_PREFIX: {{ .Values.stepschedulequeue.clientId }}
   KAFKA_TOPIC_SSR: {{ .Values.stepschedulequeue.topic }}
 
-  KAFKA_BROKERS_WER: {{ .Values.kafkaqueue.brokers }}
+  # Recibe la info del wf-manager
+  KAFKA_BROKERS_WER: {{ .Values.kafkaqueue.consumerBrokers }}
   KAFKA_USERNAME_WER: {{ .Values.kafkaqueue.username }}
   KAFKA_PASSWORD_WER: {{ .Values.kafkaqueue.password }}
   KAFKA_CLIENT_ID_WER_PREFIX: {{ .Values.wfexecutionqueue.clientId }}
   KAFKA_GROUP_ID_WER: {{ .Values.wfexecutionqueue.groupId }}
   KAFKA_TOPIC_WER: {{ .Values.wfexecutionqueue.topic }}
+
+  # Recibe las respuestas de los agents
+  KAFKA_BROKERS_SER: {{ .Values.kafkaqueue.consumerBrokers }}
+  KAFKA_USERNAME_SER: {{ .Values.kafkaqueue.username }}
+  KAFKA_PASSWORD_SER: {{ .Values.kafkaqueue.password }}
+  KAFKA_CLIENT_ID_SER_PREFIX: {{ .Values.stepResultQueue.clientId }}
+  KAFKA_GROUP_ID_SER: {{ .Values.stepResultQueue.groupId }}
+  KAFKA_TOPIC_SER: {{ .Values.stepResultQueue.topic }}
+
+  # Recibe errores del scheduler
+  KAFKA_BROKERS_SEE: {{ .Values.kafkaqueue.consumerBrokers }}
+  KAFKA_USERNAME_SEE: {{ .Values.kafkaqueue.username }}
+  KAFKA_PASSWORD_SEE: {{ .Values.kafkaqueue.password }}
+  KAFKA_CLIENT_ID_SEE_PREFIX: {{ .Values.errorschedulequeue.clientId }}
+  KAFKA_GROUP_ID_SEE: {{ .Values.errorqueue.groupId }}
+  KAFKA_TOPIC_SEE: {{ .Values.errorqueue.topic }}
 
   DB_HOST: "{{ .Values.wfexecutiondb.name }}-postgresql"
   DB_PORT: "{{ .Values.wfexecutiondb.port }}"
