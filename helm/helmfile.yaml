@@ -61,7 +61,7 @@ releases:
       persistence:
         enabled: false
 
-    - name: kafka
+  - name: kafka
     chart: bitnami/kafka
     values:
       - sasl:
