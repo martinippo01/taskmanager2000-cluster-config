@@ -13,3 +13,9 @@ data:
   KAFKA_PASSWORD: {{ .Values.kafkaqueue.password }}
   KAFKA_TOPIC: {{ .Values.wfexecutionqueue.topic }}
   KAFKA_CLIENT_ID_PREFIX: {{ .Values.wfexecutionqueue.clientId }}
+
+  # Nombre del servicio, con el que se identifica en los logs
+  SERVICE_NAME_PREFIX: {{ .Values.container.name }}
+
+  # Esta es la URL al backend de observabilidad
+  SIGNOZ_URL: {{ .Values.signoz.url }}

@@ -41,4 +41,6 @@ spec:
             - name: KAFKA_CLIENT_ID_SEE
               # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
               value: "{{ .Values.errorschedulequeue.clientId }}-$(POD_UID)"
+            - name: SERVICE_NAME
+              value: "{{ .Values.container.name }}-$(POD_UID)"
 

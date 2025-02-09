@@ -22,6 +22,11 @@ spec:
             - name: {{ .Values.container.portName }}
               containerPort: {{ .Values.container.port }}
           env:
+            - name: POD_UID
+              # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#use-pod-fields-as-values-for-environment-variables
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
@@ -37,6 +42,8 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.configMapName }}
                   key: HC_CACHE_TTL
+            - name: SERVICE_NAME
+              value: "{{ .Values.container.name }}-$(POD_UID)"
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.httpGet.path }}

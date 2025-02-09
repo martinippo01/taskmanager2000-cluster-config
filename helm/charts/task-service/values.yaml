@@ -7,6 +7,7 @@ fullname: task-service
 container:
   port: 3000
   portName: ts-cont-port
+  name: task-service
 
 step-schedule-queue:
   clientId: task-service

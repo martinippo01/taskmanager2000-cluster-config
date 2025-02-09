@@ -7,6 +7,7 @@ fullname: orquestador
 container:
   port: 3000
   portName: orq-cont-port
+  name: orquestador
 
 stepschedulequeue:
   clientId: orquestadorToScheduler
