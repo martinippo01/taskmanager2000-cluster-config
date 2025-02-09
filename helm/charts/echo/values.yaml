@@ -1,0 +1,46 @@
+configMapName: echo-agent-config
+
+replicaCount: 2
+
+namespace: task-agents
+
+fullname: echo-agent-deployment
+
+agentName: echo-agent
+sidecarName: sidecar
+
+agentImage:
+  name: echo
+  tag: 1.0.0
+
+sidecarImage:
+  name: sidecar
+  tag: 1.0.0
+
+agent:
+  url: "http://localhost:8000/echo"
+  name: "echo"
+  paramNames:
+    - "echo_value"
+  paramTypes:
+    - "string"
+
+schedulerToAgent:
+  clientId: scheToAgent
+  groupId: echoAgentGroup
+  topic: echoAgent # Cada Agent tiene que tener su propio tópico
+
+labels:
+  app: echo
+
+nfs:
+  path: /mnt/nfs
+
+livenessProbe:
+  httpGet:
+    path: /ping
+    port: 8500
+readinessProbe:
+  httpGet:
+    path: /ping
+    port: 8500

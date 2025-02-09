@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fullname }}
+  labels:
+    {{- toYaml .Values.labels | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.labels | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.sidecarName }} # Sidecar
+          image: "{{ .Values.sidecarImage.repository }}{{ .Values.sidecarImage.name }}:{{ .Values.sidecarImage.tag }}"
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.configMapName }}
+          env:
+            - name: POD_UID
+              # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#use-pod-fields-as-values-for-environment-variables
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: KAFKA_CLIENT_ID_SER
+              # https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
+              value: "{{ .Values.stepschedulequeue.clientId }}-$(POD_UID)"
+            - name: KAFKA_CLIENT_ID_STA # Scheduler to Agent
+              value: "{{ .Values.schedulerToAgent.clientId }}-$(POD_UID)"
+        - name: {{ .Values.agentName }}   # Echo
+          image: "{{ .Values.agentImage.repository }}{{ .Values.agentImage.name }}:{{ .Values.agentImage.tag }}"
+          env:
+            - name: AGENT_PORT
+              value: "8000"
+
