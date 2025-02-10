@@ -4,6 +4,9 @@ namespace: wf-manager
 
 fullname: wf-manager
 
+ingress:
+  host: wf-manager
+
 container:
   port: 3000
   portName: wf-m-cont-port

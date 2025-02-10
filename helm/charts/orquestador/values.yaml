@@ -4,6 +4,9 @@ namespace: orquestador
 
 fullname: orquestador
 
+ingress:
+  host: orquestador
+
 container:
   port: 3000
   portName: orq-cont-port

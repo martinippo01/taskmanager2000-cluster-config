@@ -1,5 +1,10 @@
 releases:
 
+  - name: traefik
+    namespace: default
+    chart: traefik/traefik
+    version: 24.0.0  
+
   - name: orquestador
     chart: ./charts/orquestador
     version: 1.0.0
