@@ -46,7 +46,10 @@ connect-to-cluster-job:
     - chmod 600 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
-    - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
+    # - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
+    - terraform show -json > terraform_output.json
+    - cat terraform_output.json
+    - jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' terraform_output.json > cluster_ip.txt
     - cat cluster_ip.txt
     - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "kubectl get nodes"
     - git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
