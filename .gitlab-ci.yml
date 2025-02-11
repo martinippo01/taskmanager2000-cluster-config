@@ -43,6 +43,7 @@ connect-to-cluster-job:
     - mkdir -p ~/.ssh
     - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 600 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
     - terraform show -json | jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' > cluster_ip.txt
