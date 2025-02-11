@@ -55,8 +55,6 @@ connect-to-cluster-job:
     - git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
     - git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
     - git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
-    # - git clone git@gitlab.com:itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
-    # - git clone git@gitlab.com:itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000
     - ls taskmanager2000-cluster-config
     - ls taskmanager2000-agents
     - ls taskmanager2000
