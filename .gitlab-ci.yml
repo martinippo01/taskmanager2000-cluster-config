@@ -56,8 +56,7 @@ connect-to-cluster-job:
       git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git &&
       ls taskmanager2000-cluster-config &&
       ls taskmanager2000-agents &&
-      ls taskmanager2000
-    "
+      ls taskmanager2000"
     
   dependencies:
     - terraform-job
