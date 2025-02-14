@@ -1,5 +1,6 @@
-#image:
-#  repository: # TODO: Create public docker hub repository
+image:
+  repository: martinippo/taskmanager2000-
+  tag: latest
 
 nfs:
   path: /mnt/nfs

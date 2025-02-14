@@ -1,56 +1,68 @@
+repositories:
+ - name: bitnami
+   url: https://charts.bitnami.com/bitnami
+ - name: traefik
+   url: https://traefik.github.io/charts
+
 releases:
 
   - name: traefik
     namespace: default
     chart: traefik/traefik
-    version: 24.0.0  
+    version: 24.0.0
+    values:
+      - installCRDs: true  
 
   - name: orquestador
     chart: ./charts/orquestador
     version: 1.0.0
+    namespace: orquestador
     values:
       - ./charts/orquestador/values.yaml
-      - ./global-values.yaml
+      - ./charts/global-values.yaml
 
   - name: scheduler
     chart: ./charts/scheduler
     version: 1.0.0
+    namespace: scheduler
     values:
       - ./charts/scheduler/values.yaml
-      - ./global-values.yaml
+      - ./charts/global-values.yaml
 
   - name: task-service
     chart: ./charts/task-service
     version: 1.0.0
+    namespace: task-service
     values:
       - ./charts/task-service/values.yaml
-      - ./global-values.yaml
+      - ./charts/global-values.yaml
 
   - name: wf-manager
     chart: ./charts/wf-manager
     version: 1.0.0
+    namespace: wf-manager
     values:
       - ./charts/wf-manager/values.yaml
-      - ./global-values.yaml
+      - ./charts/global-values.yaml
 
   - name: redis-task-service
     chart: bitnami/redis
-    version: 1.0.0
+    version: 20.7.0
     namespace: task-service
     values:
-      - ./values-redis.yaml
+      - ./charts/values-redis.yaml
 
   - name: redis-wf-manager
     chart: bitnami/redis
-    version: 1.0.0
+    version: 20.7.0
     namespace: wf-manager
     values:
-      - ./values-redis.yaml
+      - ./charts/values-redis.yaml
 
   - name: wf-execution-db
     chart: bitnami/postgresql
-    version: 10.0.0
-    namespace: wf-execution
+    version: 16.4.7
+    namespace: orquestador
     values:
     - auth:
         username: "postgres"
@@ -69,12 +81,26 @@ releases:
   - name: kafka
     chart: bitnami/kafka
     values:
+      - kraft:
+          clusterId: 6LQnK2nq0YlXpi4K7htzPt
       - sasl:
           client:
             users: 
               - "your-username"
             passwords:
               - "your-password"
+      - persistence:
+          enabled: true
+          storageClass: "local-storage" 
+          size: "1Gi"
+          accessModes:
+                - ReadWriteOnce
+    hooks:
+      - events: ["presync"]  
+        showlogs: true
+        command: "kubectl"
+        args: ["apply", "-f", "storageclass.yaml"] 
+          
   # TODO: Add the chart for 
   #   - NFS
   #   - Each Task agent
