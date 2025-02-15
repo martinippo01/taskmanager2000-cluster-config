@@ -37,7 +37,7 @@ variable "ec2_k8s_instance_type" {
 variable "ec2_k8s_workers_count" {
     description = "Number of worker nodes in the Kubernetes cluster"
     type = number
-    default     = 2  
+    default     = 3  
 }
 
 # variable "ec2_pipeline_instance_type" {

@@ -32,6 +32,11 @@ resource "aws_instance" "ec2_k8s_master" {
             POD_NETWORK_CIDR = local.k8s_network_cidr
         })
     )
+
+    root_block_device {
+      volume_size = 30
+      volume_type = "gp3"
+    }
 }
 
 resource "aws_instance" "ec2_k8s_workers" {
@@ -68,4 +73,9 @@ resource "aws_instance" "ec2_k8s_workers" {
             KUBERNETES_VERSION = local.k8s_version
         })
     )
+
+    root_block_device {
+        volume_size = 30
+        volume_type = "gp3"
+    }
 }
