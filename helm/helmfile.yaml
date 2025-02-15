@@ -3,8 +3,8 @@ repositories:
     url: https://charts.bitnami.com/bitnami
   - name: traefik
     url: https://traefik.github.io/charts
-  - name: signoz
-    url: https://charts.signoz.io
+#  - name: signoz
+#    url: https://charts.signoz.io
 
 releases:
   - name: traefik
@@ -106,34 +106,37 @@ releases:
 
   - name: kafka
     chart: bitnami/kafka
+    version: 31.0.0
     values:
       - kraft:
-          clusterId: 6LQnK2nq0YlXpi4K7htzPt
+          clusterId: "1"
       - sasl:
+          enabledMechanisms: "plain"
+          controllerMechanism: "plain"
+          interBrokerMechanism: plain
           client:
             users: 
               - "your-username"
             passwords:
               - "your-password"
+          controller:
+            users:
+              - "your-username"
+            passwords:
+              - "your-password"
       - broker:
-          replicaCount: 2  # Increased for HA
+          replicaCount: 1 
       - controller:
-          replicaCount: 2  # Increased for HA
+          replicaCount: 1
           controllerOnly: false
+      - global:
+          defaultStorageClass: "local-path"
       - controller:
           persistence:
             size: 2Gi
-          livenessProbe:
-            initialDelaySeconds: 30
-          readinessProbe:
-            initialDelaySeconds: 30
       - broker:
           persistence:
             size: 2Gi
-          livenessProbe:
-            initialDelaySeconds: 30
-          readinessProbe:
-            initialDelaySeconds: 30
       - listeners:
           client:
             containerPort: 9092
@@ -143,14 +146,14 @@ releases:
             containerPort: 9093
             protocol: PLAINTEXT
             name: CONTROLLER
-      - global:
-          defaultStorageClass: "local-path"
+      - provisioning:
+          numPartitions: 3
+          replicationFactor: 1  
       - extraEnvVars:
           - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
             value: "true"
           - name: ALLOW_PLAINTEXT_LISTENER
             value: "yes"
-
 #  - name: signoz
 #    chart: signoz/signoz
 #    namespace: default
