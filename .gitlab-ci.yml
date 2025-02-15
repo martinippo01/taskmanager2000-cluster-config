@@ -79,7 +79,7 @@ connect-to-cluster-job:
       fi
       EOF
     # - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "sudo kubeadm token create --print-join-command > ~/join-command.sh"
-    - jq -r '.outputs.ec2_k8s_workers_public_ips.value[]' /home/martinippo/Desktop/ITBA/MICROSERVICIOS/taskmanager2000-cluster-config/tmp/terraform/terraform.tfstate > worker_ips.txt
+    - jq -r '.outputs.ec2_k8s_workers_public_ips.value[]' terraform.tfstate > worker_ips.txt
     # scp worker_ips.txt to master
     - scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu worker_ips.txt ubuntu@$(cat cluster_ip.txt):~/worker_ips.txt
     - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "chmod u+x ./taskmanager2000-cluster-config/initial_k8s_config.sh"
