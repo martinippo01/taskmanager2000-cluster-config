@@ -1,17 +1,25 @@
 repositories:
- - name: bitnami
-   url: https://charts.bitnami.com/bitnami
- - name: traefik
-   url: https://traefik.github.io/charts
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: traefik
+    url: https://traefik.github.io/charts
+  - name: signoz
+    url: https://charts.signoz.io
 
 releases:
-
   - name: traefik
     namespace: default
     chart: traefik/traefik
     version: 24.0.0
     values:
       - installCRDs: true  
+
+  - name: local-storage-provisioner
+    namespace: local-path-storage
+    chart: ./local-path-provisioner
+    values:
+      - storageClass:
+          name: "local-path"
 
   - name: orquestador
     chart: ./charts/orquestador
@@ -64,19 +72,23 @@ releases:
     version: 16.4.7
     namespace: orquestador
     values:
-    - auth:
-        username: "postgres"
-        password: "password"
-        database: "wf-execution-db"
-      primary:
-        service:
-          type: ClusterIP
-          ports:
-            postgresql: 5432
-          nodePorts:
-            postgresql: 5432
-      persistence:
-        enabled: false
+      - auth:
+          username: "postgres"
+          password: "password"
+          database: "wf-execution-db"
+      - primary:
+          service:
+            type: ClusterIP
+            ports:
+              postgresql: 5432
+            nodePorts:
+              postgresql: 5432
+          persistence:
+            size: "1Gi"
+      - metrics:
+          enabled: false
+      - global:
+          defaultStorageClass: "local-path"
 
   - name: kafka
     chart: bitnami/kafka
@@ -100,6 +112,12 @@ releases:
         showlogs: true
         command: "kubectl"
         args: ["apply", "-f", "storageclass.yaml"] 
+
+  - name: signoz
+    chart: signoz/signoz
+    version: 0.70.0
+    values:
+      - ./charts/signoz-values.yaml
           
   # TODO: Add the chart for 
   #   - NFS

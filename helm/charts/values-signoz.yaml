@@ -1,0 +1,6 @@
+installCRDs: true
+global:
+  storageClass: "local-path"
+clickhouse:
+  persistence:
+    size: 2Gi
