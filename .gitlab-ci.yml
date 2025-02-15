@@ -57,12 +57,38 @@ connect-to-cluster-job:
     - |
       ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "export ACCESS_TOKEN=$ACCESS_TOKEN && bash -s" << 'EOF'
       git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
+      if [ $? -eq 0 ]; then
+        echo "✅ Cloned taskmanager2000-agents"
+      else
+        echo "❌ Git clone failed for taskmanager2000-agents"
+        exit 1
+      fi
       git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
+      if [ $? -eq 0 ]; then
+        echo "✅ Cloned taskmanager2000-cluster-config"
+      else
+        echo "❌ Git clone failed for taskmanager2000-cluster-config"
+        exit 1
+      fi
       git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
-      ls taskmanager2000-cluster-config
-      ls taskmanager2000-agents
-      ls taskmanager2000
+      if [ $? -eq 0 ]; then
+        echo "✅ Cloned taskmanager2000"
+      else
+        echo "❌ Git clone failed for taskmanager2000"
+        exit 1
+      fi
       EOF
+    - ssh -i ~/.ssh/id_ed25519 ubuntu@$(cat cluster_ip.txt) "sudo kubeadm token create --print-join-command > ~/join-command.sh"
+    - scp -i ~/.ssh/id_ed25519 ubuntu@$(cat cluster_ip.txt):~/join-command.sh .
+    - jq -r '.outputs.ec2_k8s_workers_public_ips.value[]' /home/martinippo/Desktop/ITBA/MICROSERVICIOS/taskmanager2000-cluster-config/tmp/terraform/terraform.tfstate > worker_ips.txt
+    - |
+      worker_ips=$(cat worker_ips.txt)
+      for ip in $worker_ips; do
+        echo "Connecting to $ip"
+        scp -i ~/.ssh/id_ed25519 join-command.sh ubuntu@$ip:~/join-command.sh
+        ssh -i ~/.ssh/id_ed25519 ubuntu@$ip "sudo bash ~/join-command.sh"
+      done
+
 
     
   dependencies:
@@ -70,7 +96,7 @@ connect-to-cluster-job:
   artifacts:
     paths:
       - terraform/terraform.tfstate
-      - cluster_ip.txt
+      - terraform/cluster_ip.txt
   only:
     - main
   when: manual 
