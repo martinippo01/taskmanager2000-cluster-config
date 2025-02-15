@@ -16,7 +16,7 @@ releases:
 
   - name: local-storage-provisioner
     namespace: local-path-storage
-    chart: ./local-path-provisioner
+    chart: ./charts/local-path-provisioner
     values:
       - storageClass:
           name: "local-path"
@@ -58,14 +58,28 @@ releases:
     version: 20.7.0
     namespace: task-service
     values:
-      - ./charts/values-redis.yaml
+      - architecture: standalone
+      - auth:
+          enabled: false
+      - persistence:
+          enabled: true
+          size: 1Gi
+      - global:
+          defaultStorageClass: "local-path"
 
   - name: redis-wf-manager
     chart: bitnami/redis
     version: 20.7.0
     namespace: wf-manager
     values:
-      - ./charts/values-redis.yaml
+      - architecture: standalone
+      - auth:
+          enabled: false
+      - persistence:
+          enabled: true
+          size: 1Gi
+      - global:
+          defaultStorageClass: "local-path"
 
   - name: wf-execution-db
     chart: bitnami/postgresql
@@ -101,24 +115,63 @@ releases:
               - "your-username"
             passwords:
               - "your-password"
-      - persistence:
-          enabled: true
-          storageClass: "local-storage" 
-          size: "1Gi"
-          accessModes:
-                - ReadWriteOnce
-    hooks:
-      - events: ["presync"]  
-        showlogs: true
-        command: "kubectl"
-        args: ["apply", "-f", "storageclass.yaml"] 
+      - broker:
+          replicaCount: 2  # Increased for HA
+      - controller:
+          replicaCount: 2  # Increased for HA
+          controllerOnly: false
+      - controller:
+          persistence:
+            size: 2Gi
+          livenessProbe:
+            initialDelaySeconds: 30
+          readinessProbe:
+            initialDelaySeconds: 30
+      - broker:
+          persistence:
+            size: 2Gi
+          livenessProbe:
+            initialDelaySeconds: 30
+          readinessProbe:
+            initialDelaySeconds: 30
+      - listeners:
+          client:
+            containerPort: 9092
+            protocol: PLAINTEXT
+            name: BROKER
+          controller:
+            containerPort: 9093
+            protocol: PLAINTEXT
+            name: CONTROLLER
+      - global:
+          defaultStorageClass: "local-path"
+      - extraEnvVars:
+          - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+            value: "true"
+          - name: ALLOW_PLAINTEXT_LISTENER
+            value: "yes"
 
-  - name: signoz
-    chart: signoz/signoz
-    version: 0.70.0
-    values:
-      - ./charts/signoz-values.yaml
-          
+#  - name: signoz
+#    chart: signoz/signoz
+#    namespace: default
+#    version: 0.70.0
+#    values:
+#      - installCRDs: true
+#      - global:
+#          storageClass: "local-path"
+#      - clickhouse:
+#          persistence:
+#            size: 2Gi
+
+#  - name: echo-agent
+#    chart: ./charts/echo
+#    version: 1.0.0
+#    namespace: agents
+#    values:
+#      - ./charts/echo/values.yaml
+#      - ./charts/global-values.yaml
+
+   
   # TODO: Add the chart for 
   #   - NFS
   #   - Each Task agent
