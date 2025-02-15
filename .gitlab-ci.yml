@@ -135,3 +135,4 @@ terraform-destroy-job:
   only:
     - main
   when: manual
+  
