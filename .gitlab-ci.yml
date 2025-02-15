@@ -104,7 +104,6 @@ connect-to-cluster-job:
 set-cluster-ip-job:
   stage: set-cluster-ip
   script:
-    - apk add --no-cache jq
     - cd terraform
     - cat cluster_ip.txt
   dependencies:
@@ -112,7 +111,7 @@ set-cluster-ip-job:
   artifacts:
     paths:
       - terraform/terraform.tfstate
-      - cluster_ip.txt
+      - terraform/cluster_ip.txt
   only:
     - main
   when: manual 
