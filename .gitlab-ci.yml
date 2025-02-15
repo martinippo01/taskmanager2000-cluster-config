@@ -43,21 +43,27 @@ connect-to-cluster-job:
     - mkdir -p ~/.ssh
     - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
-    - chmod 600 ~/.ssh/id_ed25519
+    - chmod 400 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
     - terraform show -json > terraform_output.json
     - jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' terraform_output.json > cluster_ip.txt
     - cat cluster_ip.txt
     - |
-      ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) << 'EOF'
-      git clone https://glpat-nNtXxTKbz_Qc4XFzAQNk@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
-      git clone https://glpat-nNtXxTKbz_Qc4XFzAQNk@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
-      git clone https://glpat-nNtXxTKbz_Qc4XFzAQNk@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
+      if [ ! -s cluster_ip.txt ]; then
+        echo "❌ Error: cluster_ip.txt is empty! Terraform output might be incorrect."
+        exit 1
+      fi
+    - |
+      ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "export ACCESS_TOKEN=$ACCESS_TOKEN && bash -s" << 'EOF'
+      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
+      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
+      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
       ls taskmanager2000-cluster-config
       ls taskmanager2000-agents
       ls taskmanager2000
       EOF
+
     
   dependencies:
     - terraform-job
