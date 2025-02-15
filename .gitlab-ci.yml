@@ -16,7 +16,7 @@ variables:
   AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN
   ENCODED_ID_ED25519: $ENCODED_ID_ED25519
   ID_ED25519_pub: $ID_ED25519_PUB
-  ACCESS_TOKEN: $CI_ACCESS_TOKEN
+  ACCESS_TOKEN: $CI_ACCESS_TOKEN_2
 
 terraform-job:
   stage: terraform
@@ -56,9 +56,9 @@ connect-to-cluster-job:
       fi
     - |
       ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "export ACCESS_TOKEN=$ACCESS_TOKEN && bash -s" << 'EOF'
-      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
-      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
-      git clone https://$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
+      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
+      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
+      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
       ls taskmanager2000-cluster-config
       ls taskmanager2000-agents
       ls taskmanager2000
