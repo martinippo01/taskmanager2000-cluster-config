@@ -28,7 +28,7 @@ terraform-job:
     - chmod 600 ~/.ssh/id_ed25519
     - cd terraform
     - terraform init
-    - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+    - terraform apply -auto-approve
   artifacts:
     paths:
       - terraform/terraform.tfstate
@@ -54,30 +54,13 @@ connect-to-cluster-job:
         echo "❌ Error: cluster_ip.txt is empty! Terraform output might be incorrect."
         exit 1
       fi
+    - jq -r '.outputs.ec2_k8s_workers_public_ips.value[]' terraform.tfstate > worker_ips.txt
+    - cat worker_ips.txt
     - |
-      ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "export ACCESS_TOKEN=$ACCESS_TOKEN && bash -s" << 'EOF'
-      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-agents.git
-      if [ $? -eq 0 ]; then
-        echo "✅ Cloned taskmanager2000-agents"
-      else
-        echo "❌ Git clone failed for taskmanager2000-agents"
+      if [ ! -s worker_ips.txt ]; then
+        echo "❌ Error: worker_ips.txt is empty! Terraform output might be incorrect."
         exit 1
       fi
-      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000-cluster-config.git
-      if [ $? -eq 0 ]; then
-        echo "✅ Cloned taskmanager2000-cluster-config"
-      else
-        echo "❌ Git clone failed for taskmanager2000-cluster-config"
-        exit 1
-      fi
-      git clone https://oauth2:$ACCESS_TOKEN@gitlab.com/itba-73-40-microservicios/alumnos/grupo-a/taskmanager2000.git
-      if [ $? -eq 0 ]; then
-        echo "✅ Cloned taskmanager2000"
-      else
-        echo "❌ Git clone failed for taskmanager2000"
-        exit 1
-      fi
-      EOF
     
   dependencies:
     - terraform-job
@@ -85,6 +68,7 @@ connect-to-cluster-job:
     paths:
       - terraform/terraform.tfstate
       - terraform/cluster_ip.txt
+      - terraform/worker_ips.txt
   only:
     - main
   when: manual 
