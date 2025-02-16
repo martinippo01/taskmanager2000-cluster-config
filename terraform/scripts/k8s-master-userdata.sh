@@ -98,4 +98,4 @@ sudo mount -t nfs ${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point}
 ################### Disable Firewall ###################
 sudo ufw disable
 
-reboot
+sudo reboot
