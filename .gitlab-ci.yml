@@ -78,20 +78,6 @@ connect-to-cluster-job:
         exit 1
       fi
       EOF
-    # - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "sudo kubeadm token create --print-join-command > ~/join-command.sh"
-    - jq -r '.outputs.ec2_k8s_workers_public_ips.value[]' terraform.tfstate > worker_ips.txt
-    # scp worker_ips.txt to master
-    - scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu worker_ips.txt ubuntu@$(cat cluster_ip.txt):~/worker_ips.txt
-    - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "chmod u+x ./taskmanager2000-cluster-config/initial_k8s_config.sh"
-    - ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt) "./taskmanager2000-cluster-config/initial_k8s_config.sh"
-    # - scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt):~/join-command.sh .
-    # - |
-    #   worker_ips=$(cat worker_ips.txt)
-    #   for ip in $worker_ips; do
-    #     echo "Connecting to $ip"
-    #     scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu join-command.sh ubuntu@$ip:~/join-command.sh
-    #     ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$ip "sudo bash ~/join-command.sh"
-    #   done
     
   dependencies:
     - terraform-job
