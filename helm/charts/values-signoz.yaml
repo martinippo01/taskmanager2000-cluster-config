@@ -1,6 +1,43 @@
 installCRDs: true
+
 global:
   storageClass: "local-path"
+
+# zookeeper:
+#   persistence:
+#     enabled: true
+#     size: 2Gi  # Change this to the desired size
+
 clickhouse:
   persistence:
     size: 2Gi
+    # storageClass: "local-path"
+    
+# otelCollector:
+#   enabled: true
+#   service:
+#     type: ClusterIP
+#     ports:
+#       otlpGrpc: 4317
+#       otlpHttp: 4318
+
+# frontend:
+#   enabled: true
+#   service:
+#     type: ClusterIP
+#     port: 3301  # SigNoz frontend default port
+#   ingress:
+#     enabled: true
+#     className: traefik
+#     annotations:
+#       traefik.ingress.kubernetes.io/router.entrypoints: web
+#     hosts:
+#       - host: signoz.local
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: signoz-frontend
+#                 port:
+#                   number: 3301  # Ensure this port matches the frontend service

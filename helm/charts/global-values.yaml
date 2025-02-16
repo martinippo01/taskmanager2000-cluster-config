@@ -28,7 +28,7 @@ hc:
   cacheTtl: 300
 
 signoz:
-  url: http://signoz-otel-collector.platform.svc.cluster.local:4318/v1/traces
+  url: http://signoz-otel-collector.default.svc.cluster.local:4318/v1/traces
 
 wfmanager:
   namespace: wf-manager

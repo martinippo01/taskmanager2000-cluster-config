@@ -1,6 +1,13 @@
+global:
+  defaultStorageClass: "local-path"
 architecture: standalone
 auth:
   enabled: false
-persistence:
-  enabled: true
-  size: 1Gi
+master:
+  persistence:
+    enabled: true
+    size: 1Gi
+replica:
+  persistence:
+    enabled: true
+    size: 1Gi
