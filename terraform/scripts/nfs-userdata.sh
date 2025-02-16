@@ -27,3 +27,8 @@ sudo ufw allow from ${nfs_client_ip_range} to any port nfs
 
 # Enable the NFS server to start on boot
 sudo systemctl enable nfs-kernel-server
+
+################### Disable Firewall ###################
+sudo ufw disable
+
+sudo reboot

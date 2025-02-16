@@ -94,3 +94,8 @@ echo "${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point} nfs defaults
 
 # Mount the NFS share
 sudo mount -t nfs ${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point}
+
+################### Disable Firewall ###################
+sudo ufw disable
+
+reboot

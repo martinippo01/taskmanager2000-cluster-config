@@ -29,7 +29,7 @@ output "ec2_nfs_server_dns_name" {
 }
 
 output "ec2_nfs_server_url" {
-  value = "nfs://${aws_instance.nfs.public_dns}/${var.ec2_nfs_server_mount_point}"
+  value = "nfs://${aws_instance.nfs.public_dns}${var.ec2_nfs_server_mount_point}"
   description = "The NFS URL of the NFS server EC2 instance"
 }
 
