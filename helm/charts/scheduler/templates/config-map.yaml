@@ -28,4 +28,4 @@ data:
   KAFKA_PASSWORD_SEE: {{ .Values.kafkaqueue.password }}
   KAFKA_TOPIC_SEE: {{ .Values.errorqueue.topic }}
 
-  TASK_SERVICE_URL: "{{ .Values.taskservice.service.name }}.{{ .Values.taskservice.namespace }}.svc.cluster.local:{{ .Values.taskservice.service.port }}"
+  TASK_SERVICE_URL: "http://{{ .Values.taskservice.service.name }}.{{ .Values.taskservice.namespace }}.svc.cluster.local:{{ .Values.taskservice.service.port }}"
