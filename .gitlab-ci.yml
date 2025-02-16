@@ -26,9 +26,8 @@ terraform-job:
     - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
     - chmod 600 ~/.ssh/id_ed25519
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
+    - mkdir -p ~/.aws
+    - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
     - cd terraform
     - terraform init
     - terraform apply -auto-approve
