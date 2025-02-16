@@ -29,6 +29,7 @@ terraform-job:
     - chmod 600 ~/.ssh/id_ed25519
     - mkdir -p ~/.aws
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
+    - cat ~/.aws/credentials
     - cd terraform
     - terraform init
     - terraform apply -auto-approve
