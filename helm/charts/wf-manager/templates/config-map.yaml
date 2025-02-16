@@ -18,4 +18,5 @@ data:
   SERVICE_NAME_PREFIX: {{ .Values.container.name }}
 
   # Esta es la URL al backend de observabilidad
-  SIGNOZ_URL: {{ .Values.signoz.url }}
+  LOGGER_URL: {{ .Values.signoz.loggerUrl }}
+  TRACE_URL: {{ .Values.signoz.traceUrl }}

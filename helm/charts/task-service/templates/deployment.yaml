@@ -44,6 +44,16 @@ spec:
                   key: HC_CACHE_TTL
             - name: SERVICE_NAME
               value: "{{ .Values.container.name }}-$(POD_UID)"
+            - name: LOGGER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: LOGGER_URL
+            - name: TRACE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: TRACE_URL
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.httpGet.path }}
