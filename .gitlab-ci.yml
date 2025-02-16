@@ -29,7 +29,6 @@ terraform-job:
     - chmod 600 ~/.ssh/id_ed25519
     - mkdir -p ~/.aws
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
-    - cat ~/.aws/credentials
     - cd terraform
     - export AWS_PROFILE=default
     - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
