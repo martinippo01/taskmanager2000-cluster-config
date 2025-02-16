@@ -1,0 +1,11 @@
+name: DosEchos
+description: Hace dos echos
+version: "1"
+steps:
+  - name: echo1
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: val_echo1
+

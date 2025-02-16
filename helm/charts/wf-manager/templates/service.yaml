@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.wfmanager.service.type }}
   ports:
     - port: {{ .Values.wfmanager.service.port }}
-      targetPort: {{ .Values.container.portName }}
+      targetPort: {{ .Values.container.port }}
       protocol: TCP
       name: {{ .Values.wfmanager.service.portName }}
   selector:
