@@ -112,8 +112,8 @@ releases:
           clusterId: "1"
       - sasl:
           enabledMechanisms: "plain"
+          interBrokerMechanism: "plain"
           controllerMechanism: "plain"
-          interBrokerMechanism: plain
           client:
             users: 
               - "your-username"
@@ -125,9 +125,9 @@ releases:
             passwords:
               - "your-password"
       - broker:
-          replicaCount: 1 
+          replicaCount: 3
       - controller:
-          replicaCount: 1
+          replicaCount: 3
           controllerOnly: false
       - global:
           defaultStorageClass: "local-path"
@@ -140,11 +140,11 @@ releases:
       - listeners:
           client:
             containerPort: 9092
-            protocol: PLAINTEXT
+            protocol: SASL_PLAINTEXT
             name: BROKER
           controller:
             containerPort: 9093
-            protocol: PLAINTEXT
+            protocol: SASL_PLAINTEXT
             name: CONTROLLER
       - provisioning:
           numPartitions: 3
@@ -152,8 +152,17 @@ releases:
       - extraEnvVars:
           - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
             value: "true"
-          - name: ALLOW_PLAINTEXT_LISTENER
-            value: "yes"
+          - name: KAFKA_CFG_SASL_ENABLED_MECHANISMS
+            value: "PLAIN"
+          - name: KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL
+            value: "PLAIN"
+          - name: KAFKA_CFG_LISTENERS
+            value: "SASL_PLAINTEXT://:9092"
+          - name: KAFKA_CFG_ADVERTISED_LISTENERS
+            value: "SASL_PLAINTEXT://kafka-0.kafka-headless.default.svc.cluster.local:9092"
+          - name: KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND
+            value: "true"
+
 #  - name: signoz
 #    chart: signoz/signoz
 #    namespace: default

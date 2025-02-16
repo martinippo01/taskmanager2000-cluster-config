@@ -6,7 +6,7 @@ nfs:
   path: /mnt/nfs
 
 kafkaqueue:
-  consumerBrokers: kafka-broker-headless.default.svc.cluster.local:9092
+  consumerBrokers: kafka.default.svc.cluster.local:9092
   producerBrokers: kafka-broker-headless.default.svc.cluster.local:9092
   username: your-username
   password: your-password
