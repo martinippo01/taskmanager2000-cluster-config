@@ -10,9 +10,9 @@ releases:
   - name: traefik
     namespace: default
     chart: traefik/traefik
-    version: 24.0.0
     values:
-      - installCRDs: true  
+      - installCRDs: true
+      - ./charts/values-traefik.yaml
 
   - name: local-storage-provisioner
     namespace: local-path-storage

@@ -7,8 +7,9 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: "Host(`{{ .Values.ingress.host }}`)"
-      kind: Rule
+    - kind: Rule
+      match: PathPrefix(`/workflows`)
       services:
-        - name: {{ .Values.wfmanager.service.name }}
+        - kind: Service
+          name: {{ .Values.wfmanager.service.name }}
           port: {{ .Values.wfmanager.service.port }}

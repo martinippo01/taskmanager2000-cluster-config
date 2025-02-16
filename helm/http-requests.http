@@ -1,0 +1,22 @@
+### Create a Workflow
+#GET http://54.83.89.192:25000/workflow-execution
+
+POST http://54.83.89.192:25000/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./workflow.yaml
+
+--boundary1234--
+
+
+
+
+
+
+
+
+

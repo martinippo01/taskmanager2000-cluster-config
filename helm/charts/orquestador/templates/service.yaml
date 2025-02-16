@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.orquestador.service.type }}
   ports:
     - port: {{ .Values.orquestador.service.port }}
-      targetPort: {{ .Values.container.portName }}
+      targetPort: {{ .Values.container.port }}
       protocol: TCP
       name: {{ .Values.orquestador.service.portName }}
   selector:

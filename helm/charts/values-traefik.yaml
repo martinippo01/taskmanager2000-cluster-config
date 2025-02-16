@@ -1,0 +1,62 @@
+entryPoints:
+  web:
+   address: ":80"
+
+deployment:
+  replicas: 1
+
+service:
+  type: NodePort
+  nodePorts:
+    http: 25000
+
+ports:
+  web:
+    port: 80
+    nodePort: 25000
+    exposePort: 25000
+
+ingressRoute:
+  dashboard:
+    enabled: true
+    insecure: true
+    entryPoints:
+      - web
+    routes:
+      - match: PathPrefix('/dashboard')
+        kind: Rule
+        services:
+          - name: api@internal
+            port: 80
+
+providers:
+  kubernetesIngress:
+    enabled: true
+    ingressClass: "traefik"  
+
+securityContext:
+  allowPrivilegeEscalation: true
+  capabilities:
+      drop:
+      - ALL
+      add:
+      - NET_BIND_SERVICE
+
+podSecurityContext:
+  runAsNonRoot: false
+  runAsUser: 0
+  runAsGroup: 0
+
+additionalArguments:
+  - "--api.insecure=true"
+  - "--api.dashboard=true"
+  - "--entrypoints.web.address=:80"
+  - "--providers.kubernetescrd"
+  - "--providers.kubernetesingress"
+  - "--providers.kubernetescrd.allowCrossNamespace=true"
+  - "--log.level=DEBUG"  # Enable debug logs
+  - "--accesslog=true"  # Track access logs
+
+resources: {}
+persistence:
+  enabled: false
