@@ -46,7 +46,7 @@ terraform-job:
 connect-to-cluster-job:
   stage: connect-to-cluster
   script:
-    - apk add --no-cache jq
+    - apk add --no-cache curl jq
     - mkdir -p ~/.ssh
     - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
