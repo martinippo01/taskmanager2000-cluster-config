@@ -1,35 +1,35 @@
-configMapName: echo-agent-config
+configMapName: bash-agent-config
 
 replicaCount: 2
 
 namespace: agents
 
-fullname: echo-agent-deployment
+fullname: bash-agent-deployment
 
-agentName: echo-agent
+agentName: bash-agent
 sidecarName: sidecar
 
 agentImage:
-  name: echo
+  name: bash
 
 sidecarImage:
   name: sidecar
 
 agent:
-  url: "http://localhost:8000/echo"
-  name: "echo"
+  url: "http://localhost:8000/execute"
+  name: "bash"
   paramNames:
-    - "input"
+    - "command"
   paramTypes:
     - "string"
 
 schedulerToAgent:
-  clientId: scheToAgentEcho
-  groupId: echoAgentGroup
-  topic: echoAgent # Cada Agent tiene que tener su propio tópico
+  clientId: scheToAgentBash
+  groupId: bashAgentGroup
+  topic: bashAgent # Cada Agent tiene que tener su propio tópico
 
 labels:
-  app: echo
+  app: bash
 
 nfs:
   path: /mnt/nfs

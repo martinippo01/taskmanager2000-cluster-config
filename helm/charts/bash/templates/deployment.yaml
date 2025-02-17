@@ -47,5 +47,4 @@ spec:
         - name: shared-storage
           persistentVolumeClaim:
             claimName: shared-nfs-pvc  # Fixed PVC name
-          
 

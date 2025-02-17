@@ -1,7 +1,9 @@
 ### Create a Workflow
-#GET http://54.83.89.192:25000/workflow-execution
+GET http://54.83.89.192:30000/workflow-execution
 
-POST http://54.83.89.192:25000/workflows
+
+### Post a workflow
+POST http://54.83.89.192:30000/workflows
 Content-Type: multipart/form-data; boundary=boundary1234
 
 --boundary1234
@@ -13,10 +15,18 @@ Content-Type: application/yaml
 --boundary1234--
 
 
+### Toggle
+PUT http://54.83.89.192:30000/workflows/UnEcho/status
 
 
 
+### Execute Workflow Request
+POST http://54.83.89.192:30000/workflows/UnEcho?version=1
+Content-Type: application/json
 
-
-
+{
+  "inputArgs": {
+    "val_echo1": "Probandooo"
+  }
+}
 
