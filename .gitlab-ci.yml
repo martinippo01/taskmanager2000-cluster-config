@@ -74,8 +74,8 @@ connect-to-cluster-job:
       curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"CLUSTER_IP\", \"value\": \"$(cat cluster_ip.txt)\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/CLUSTER_IP"
     - cd ..
     - chmod u+x ./init.sh ./transform_worker_ips.sh
-    - ./transform_worker_ips.sh worker_ips.txt > worker_ips_transformed.txt
-    - ./init.sh cluster_ip.txt worker_ips_transformed.txt
+    - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
+    - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt
     # - mkdir -p /helm/.kube
     # - scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$(cat cluster_ip.txt):~/.kube/config /helm/.kube/config
     # - echo "Modifying the kubeconfig file to use the master node's IP address..."
