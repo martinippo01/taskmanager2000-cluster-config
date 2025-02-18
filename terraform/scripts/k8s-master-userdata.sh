@@ -99,3 +99,7 @@ sudo mount -t nfs ${nfs_server_ip}:${nfs_server_mount_point} ${nfs_mount_point}
 sudo ufw disable
 
 sudo reboot
+
+################### Add NFS Server private IP as env var ###################
+export NFS_SERVER=${nfs_server_ip}
+
