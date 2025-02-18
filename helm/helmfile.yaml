@@ -156,66 +156,65 @@ releases:
           readOnly: false
 
 
-#  - name: bash-agent
-#    chart: ./charts/bash
-#    version: 1.0.0
-#    namespace: agents
-#    values:
-#      - ./charts/bash/values.yaml
-#      - ./charts/global-values.yaml
-#      - pvc:
-#          name: "bash-service-pv"
-#          accessMode: "ReadWriteMany"
-#          size: "1Gi"
-#          label: "bash-pv"
-#      - volumes:
-#          - name: "bash-service-pv"
-#            persistentVolumeClaim:
-#              claimName: "bash-service-pv"
-#      - volumeMounts:
-#          - name: "bash-service-pv"
-#            mountPath: "/answers"
-#            readOnly: false
-#
-#  - name: s3-upload-agent
-#    chart: ./charts/s3-upload
-#    version: 1.0.0
-#    namespace: agents
-#    values:
-#      - ./charts/s3-upload/values.yaml
-#      - ./charts/global-values.yaml
-#      - pvc:
-#          name: "upload-service-pv"
-#          accessMode: "ReadWriteMany"
-#          size: "1Gi"
-#          label: "upload-pv"
-#      - volumes:
-#          - name: "upload-service-pv"
-#            persistentVolumeClaim:
-#              claimName: "upload-service-pv"
-#      - volumeMounts:
-#          - name: "upload-service-pv"
-#            mountPath: "/answers"
-#            readOnly: false
-#
-#  - name: s3-download-agent
-#    chart: ./charts/s3-download
-#    version: 1.0.0
-#    namespace: agents
-#    values:
-#      - ./charts/s3-download/values.yaml
-#      - ./charts/global-values.yaml
-#      - pvc:
-#          name: "download-service-pv"
-#          accessMode: "ReadWriteMany"
-#          size: "1Gi"
-#          label: "download-pv"
-#      - volumes:
-#          - name: "download-service-pv"
-#            persistentVolumeClaim:
-#              claimName: "download-service-pv"
-#      - volumeMounts:
-#          - name: "download-service-pv"
-#            mountPath: "/answers"
-#            readOnly: false
+  - name: bash-agent
+    chart: ./charts/bash
+    version: 1.0.0
+    namespace: agents
+    values:
+      - ./charts/bash/values.yaml
+      - ./charts/global-values.yaml
+      - pvc:
+          name: "bash-service-pv"
+          accessMode: "ReadWriteMany"
+          size: "1Gi"
+          label: "bash-pv"
+      - volumes:
+          - name: "bash-service-pv"
+            persistentVolumeClaim:
+              claimName: "bash-service-pv"
+      - volumeMounts:
+          - name: "bash-service-pv"
+            mountPath: "/answers"
+            readOnly: false
 
+  - name: s3-upload-agent
+    chart: ./charts/s3-upload
+    version: 1.0.0
+    namespace: agents
+    values:
+      - ./charts/s3-upload/values.yaml
+      - ./charts/global-values.yaml
+      - pvc:
+          name: "upload-service-pv"
+          accessMode: "ReadWriteMany"
+          size: "1Gi"
+          label: "upload-pv"
+      - volumes:
+          - name: "upload-service-pv"
+            persistentVolumeClaim:
+              claimName: "upload-service-pv"
+      - volumeMounts:
+          - name: "upload-service-pv"
+            mountPath: "/answers"
+            readOnly: false
+
+  - name: s3-download-agent
+    chart: ./charts/s3-download
+    version: 1.0.0
+    namespace: agents
+    values:
+      - ./charts/s3-download/values.yaml
+      - ./charts/global-values.yaml
+      - pvc:
+          name: "download-service-pv"
+          accessMode: "ReadWriteMany"
+          size: "1Gi"
+          label: "download-pv"
+      - volumes:
+          - name: "download-service-pv"
+            persistentVolumeClaim:
+              claimName: "download-service-pv"
+      - volumeMounts:
+          - name: "download-service-pv"
+            mountPath: "/answers"
+            readOnly: false
