@@ -34,11 +34,11 @@ releases:
             size: "1Gi"
             label: "orquestador-pv"
       - volumes:
-          - name: "orquestador-service-pv"
+            name: "orquestador-service-pv"
             persistentVolumeClaim:
               claimName: "orquestador-service-pv"
       - volumeMounts:
-          - name: "orquestador-service-pv"
+            name: "orquestador-service-pv"
             mountPath: "/answers"
             readOnly: false
 
@@ -136,7 +136,7 @@ releases:
   
   - name: echo-agent
     chart: ./charts/echo
-    version: 1.0.0
+    version: 2.0.0
     namespace: agents
     values:
       - ./charts/echo/values.yaml
@@ -147,16 +147,15 @@ releases:
           size: "1Gi"
           label: "echo-pv"
       - volumes:
-          - name: "echo-service-pv"
-            persistentVolumeClaim:
-              claimName: "echo-service-pv"
+          name: "echo-service-pv"
+          persistentVolumeClaim:
+            claimName: "echo-service-pv"
       - volumeMounts:
-          - name: "echo-service-pv"
-            mountPath: "/answers"
-            readOnly: false
+          name: "echo-service-pv"
+          mountPath: "/answers"
+          readOnly: false
 
 
-    # TODO: Faltan las imagenes!!!
 #  - name: bash-agent
 #    chart: ./charts/bash
 #    version: 1.0.0

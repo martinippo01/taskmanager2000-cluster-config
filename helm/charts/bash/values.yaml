@@ -10,10 +10,10 @@ agentName: bash-agent
 sidecarName: sidecar
 
 agentImage:
-  name: bash
+  name: agent-linux-command
 
 sidecarImage:
-  name: sidecar
+  name: agent-sidecar
 
 agent:
   url: "http://localhost:8000/execute"

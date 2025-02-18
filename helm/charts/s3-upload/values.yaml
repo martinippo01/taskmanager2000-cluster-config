@@ -10,10 +10,10 @@ agentName: upload-agent
 sidecarName: sidecar
 
 agentImage:
-  name: s3-upload
+  name: agent-upload-s3
 
 sidecarImage:
-  name: sidecar
+  name: agent-sidecar
 
 agent:
   url: "http://localhost:8000/upload"

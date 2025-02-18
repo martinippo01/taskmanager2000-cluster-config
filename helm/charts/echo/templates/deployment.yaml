@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.sidecarName }} # Sidecar
-          image: "{{ .Values.sidecarImage.repository }}{{ .Values.sidecarImage.name }}:{{ .Values.sidecarImage.tag }}"
+          image: "{{ .Values.image.repository }}{{ .Values.sidecarImage.name }}:{{ .Values.image.tag }}"
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -41,7 +41,7 @@ spec:
               mountPath: {{ .Values.volumeMounts.mountPath }}  # Mount path inside container
               readOnly: {{ .Values.volumeMounts.readOnly }}
         - name: {{ .Values.agentName }}   # Echo
-          image: "{{ .Values.image.repository }}{{ .Values.agentImage.name }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}{{ .Values.agentImage.name }}:latest"
           env:
             - name: AGENT_PORT
               value: "8000"

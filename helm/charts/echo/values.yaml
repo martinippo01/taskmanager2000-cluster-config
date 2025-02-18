@@ -10,10 +10,10 @@ agentName: echo-agent
 sidecarName: sidecar
 
 agentImage:
-  name: echo
+  name: agent-echo
 
 sidecarImage:
-  name: sidecar
+  name: agent-sidecar
 
 ingress:
   enabled: false
