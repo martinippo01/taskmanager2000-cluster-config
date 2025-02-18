@@ -1,0 +1,44 @@
+configMapName: upload-agent-config
+
+replicaCount: 2
+
+namespace: agents
+
+fullname: upload-agent-deployment
+
+agentName: upload-agent
+sidecarName: sidecar
+
+agentImage:
+  name: s3-upload
+
+sidecarImage:
+  name: sidecar
+
+agent:
+  url: "http://localhost:8000/upload"
+  name: "upload"
+  paramNames:
+    - "file"
+  paramTypes:
+    - "string" # TODO: No sé qué hacer con esto
+
+schedulerToAgent:
+  clientId: scheToAgentUpload
+  groupId: uploadAgentGroup
+  topic: uploadAgent # Cada Agent tiene que tener su propio tópico
+
+labels:
+  app: upload
+
+nfs:
+  path: /mnt/nfs
+
+livenessProbe:
+  httpGet:
+    path: /ping
+    port: 8500
+readinessProbe:
+  httpGet:
+    path: /ping
+    port: 8500

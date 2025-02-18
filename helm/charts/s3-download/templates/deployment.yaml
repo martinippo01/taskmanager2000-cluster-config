@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.sidecarName }} # Sidecar
-          image: "{{ .Values.sidecarImage.repository }}{{ .Values.sidecarImage.name }}:{{ .Values.sidecarImage.tag }}"
+          image: "{{ .Values.image.repository }}{{ .Values.sidecarImage.name }}:{{ .Values.image.tag }}"
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -47,5 +47,4 @@ spec:
         - name: shared-storage
           persistentVolumeClaim:
             claimName: shared-nfs-pvc  # Fixed PVC name
-          
 

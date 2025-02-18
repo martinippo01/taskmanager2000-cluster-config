@@ -1,0 +1,7 @@
+storage: 1Gi            # PV storage size
+accessMode: ReadWriteMany # Allow multiple microservices to write/read
+storageClassName: shared-nfs # Storage class used for NFS
+nfsServer: NoSeQuePonerAca   # Replace with your NFS server IP
+nfsPath: /mnt/nfs           # Path to shared directory on the NFS server
+pvcStorage: 1Gi            # PVC storage request (should be ≤ PV capacity)
+

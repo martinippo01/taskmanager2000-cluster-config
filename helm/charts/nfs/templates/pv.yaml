@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-shared-nfs-pv  # Dynamically name it based on release
+  labels:
+    app: {{ .Release.Name }}-shared-nfs
+spec:
+  capacity:
+    storage: {{ .Values.storage }}  # Defined in values.yaml
+  volumeMode: Filesystem
+  accessModes:
+    - {{ .Values.accessMode }}  # Can be "ReadWriteMany", "ReadWriteOnce", etc.
+  storageClassName: {{ .Values.storageClassName }}  # Dynamically set in values.yaml
+  persistentVolumeReclaimPolicy: Retain  # Keep data even if PV is deleted
+  nfs:
+    server: {{ .Values.nfsServer }}  # NFS server from values.yaml
+    path: {{ .Values.nfsPath }}     # NFS path from values.yaml

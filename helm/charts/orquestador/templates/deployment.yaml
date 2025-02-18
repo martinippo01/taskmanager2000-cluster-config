@@ -48,3 +48,10 @@ spec:
               value: "{{ .Values.stepResultQueue.clientId }}-$(POD_UID)"
             - name: SERVICE_NAME
               value: "{{ .Values.container.name }}-$(POD_UID)"
+          volumeMounts:
+            - name: shared-storage  # Name of the volume defined below
+              mountPath: /mnt/shared-data  # Mount path inside container
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: shared-nfs-pvc  # Fixed PVC nam
