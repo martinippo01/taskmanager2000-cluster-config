@@ -68,7 +68,8 @@ connect-to-cluster-job:
       if [ ! -s nfs_server_ip.txt ]; then
         echo "❌ Error: nfs_server_ip.txt is empty! Terraform output might be incorrect."
         exit 1
-      fi   - echo "pushing cluster ip to gitlab"
+      fi   
+    - echo "pushing variables to gitlab"
     - |
       curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"NFS_SERVER_IP\", \"value\": \"$(cat nfs_server_ip.txt)\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/NFS_SERVER_IP"
     - |
