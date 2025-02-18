@@ -86,6 +86,7 @@ connect-to-cluster-job:
       - terraform/nfs_server_ip.txt
   only:
     - main
+  needs: ["terraform-job"]
 
 set-up-cluster-job:
   stage: set-up-cluster
@@ -132,6 +133,7 @@ set-up-cluster-job:
       - terraform/worker_ips.txt
   only:
     - main
+  needs: ["connect-to-cluster-job"]
 
 workers-join-cluster-job:
   stage: workers-join-cluster
@@ -152,6 +154,7 @@ workers-join-cluster-job:
   start_in: 5 minutes  # Waits 10 minutes before running
   only:
     - main
+  needs: ["set-up-cluster-job"]
 
 terraform-destroy-job:
   stage: destroy
