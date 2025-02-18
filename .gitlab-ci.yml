@@ -7,6 +7,7 @@ stages:
 
 image: 
   name: hashicorp/terraform
+  entrypoint: [""]
 
 variables:
   TF_LOG: DEBUG
@@ -138,10 +139,12 @@ set-up-cluster-job:
 
 workers-join-cluster-job:
   stage: workers-join-cluster
+  image: alpine:latest
   script:
+    - apk add --no-cache bash
     - echo "Joining workers to cluster..."
     - chmod u+x ./init.sh
-    - tr '\n' ' ' <  terraform/worker_ips.txt | sed 's/ $//' > terraform/worker_ips_transformed.txt
+    - tr '\n' ' ' < terraform/worker_ips.txt | sed 's/ $//' > terraform/worker_ips_transformed.txt
     - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt
     - echo "Workers joined successfully!"
   dependencies:
