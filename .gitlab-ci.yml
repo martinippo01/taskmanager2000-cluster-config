@@ -119,7 +119,7 @@ terraform-destroy-job:
     - cd terraform
     - export AWS_PROFILE=default
     - terraform init
-    - terraform apply -auto-approve
+    - terraform destroy -auto-approve
   dependencies:
     - terraform-job
   artifacts:
