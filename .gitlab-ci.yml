@@ -11,9 +11,6 @@ image:
 
 variables:
   TF_LOG: DEBUG
-  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-  AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN
   ENCODED_ID_ED25519: $ENCODED_ID_ED25519
   ID_ED25519_pub: $ID_ED25519_PUB
   ACCESS_TOKEN: $CI_ACCESS_TOKEN_2
@@ -31,9 +28,6 @@ terraform-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
     - cd terraform
     - export AWS_PROFILE=default
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
     - terraform init
     - terraform apply -auto-approve
   artifacts:
@@ -124,9 +118,6 @@ terraform-destroy-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials    
     - cd terraform
     - export AWS_PROFILE=default
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
     - terraform init
     - terraform apply -auto-approve
   dependencies:
