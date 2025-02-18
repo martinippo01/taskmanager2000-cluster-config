@@ -49,9 +49,10 @@ spec:
             - name: SERVICE_NAME
               value: "{{ .Values.container.name }}-$(POD_UID)"
           volumeMounts:
-            - name: shared-storage  # Name of the volume defined below
-              mountPath: /mnt/shared-data  # Mount path inside container
+            - name: {{ .Values.volumeMounts.name }}  # Name of the volume defined below
+              mountPath: {{ .Values.volumeMounts.mountPath }}  # Mount path inside container
+              readOnly: {{ .Values.volumeMounts.readOnly }}
       volumes:
-        - name: shared-storage
+        - name: {{ .Values.volumes.name }}
           persistentVolumeClaim:
-            claimName: shared-nfs-pvc  # Fixed PVC nam
+            claimName: {{ .Values.volumes.persistentVolumeClaim.claimName }}  # Fixed PVC name

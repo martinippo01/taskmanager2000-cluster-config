@@ -28,6 +28,19 @@ releases:
     values:
       - ./charts/orquestador/values.yaml
       - ./charts/global-values.yaml
+      - pvc:
+            name: "orquestador-service-pv"
+            accessMode: "ReadWriteMany"
+            size: "1Gi"
+            label: "orquestador-pv"
+      - volumes:
+          - name: "orquestador-service-pv"
+            persistentVolumeClaim:
+              claimName: "orquestador-service-pv"
+      - volumeMounts:
+          - name: "orquestador-service-pv"
+            mountPath: "/answers"
+            readOnly: false
 
   - name: scheduler
     chart: ./charts/scheduler
@@ -115,6 +128,7 @@ releases:
           - "upload-pv"
           - "download-pv"
           - "bash-pv"
+          - "orquestador-pv"
       - storage: "1Gi"
       - accessMode: "ReadWriteMany"
       - nfsServer: {{ requiredEnv "NFS_SERVER" }} # IP privada del EC2 en donde está el NFS
@@ -138,7 +152,7 @@ releases:
               claimName: "echo-service-pv"
       - volumeMounts:
           - name: "echo-service-pv"
-            mountPath: "/data"
+            mountPath: "/answers"
             readOnly: false
 
 
@@ -161,7 +175,7 @@ releases:
 #              claimName: "bash-service-pv"
 #      - volumeMounts:
 #          - name: "bash-service-pv"
-#            mountPath: "/data"
+#            mountPath: "/answers"
 #            readOnly: false
 #
 #  - name: s3-upload-agent
@@ -182,7 +196,7 @@ releases:
 #              claimName: "upload-service-pv"
 #      - volumeMounts:
 #          - name: "upload-service-pv"
-#            mountPath: "/data"
+#            mountPath: "/answers"
 #            readOnly: false
 #
 #  - name: s3-download-agent
@@ -203,6 +217,6 @@ releases:
 #              claimName: "download-service-pv"
 #      - volumeMounts:
 #          - name: "download-service-pv"
-#            mountPath: "/data"
+#            mountPath: "/answers"
 #            readOnly: false
 
