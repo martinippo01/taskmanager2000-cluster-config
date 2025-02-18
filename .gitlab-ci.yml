@@ -90,6 +90,9 @@ connect-to-cluster-job:
 
 set-up-cluster-job:
   stage: set-up-cluster
+    image:
+    name: ghcr.io/helmfile/helmfile:latest
+    entrypoint: [""] # Override the default entrypoint
   script:
     - apk add --no-cache curl jq kubectl
     # TODO maybe: join workers to cluster
