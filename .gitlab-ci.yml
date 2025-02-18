@@ -1,7 +1,7 @@
 stages:
   - terraform
   - connect-to-cluster
-  - set-cluster-ip
+  - set-up-cluster
   - trigger-deployment
   - destroy
 
@@ -75,11 +75,7 @@ connect-to-cluster-job:
     - |
       curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"CLUSTER_IP\", \"value\": \"$(cat cluster_ip.txt)\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/CLUSTER_IP"
     - |
-      curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"WORKER_IPS\", \"value\": \"$(tr '\n' ' ' < worker_ips.txt | sed 's/ $//')\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/WORKER_IPS"   # - cd ..
-    # - chmod u+x ./init.sh ./transform_worker_ips.sh
-    # - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
-    # - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt    
-    
+      curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"WORKER_IPS\", \"value\": \"$(tr '\n' ' ' < worker_ips.txt | sed 's/ $//')\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/WORKER_IPS"   # - cd ..  
   dependencies:
     - terraform-job
   artifacts:
@@ -87,21 +83,50 @@ connect-to-cluster-job:
       - terraform/terraform.tfstate
       - terraform/cluster_ip.txt
       - terraform/worker_ips.txt
+      - terraform/nfs_server_ip.txt
   only:
     - main
   when: manual 
 
-set-cluster-ip-job:
-  stage: set-cluster-ip
+set-up-cluster-job:
+  stage: set-up-cluster
   script:
-    - cd terraform
-    - cat cluster_ip.txt
+    # TODO maybe: join workers to cluster
+    # - chmod u+x ./init.sh ./transform_worker_ips.sh
+    # - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
+    # - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt    
+    - echo "Deploying to k8s ..."
+    # Move the config file to the helm directory to connecto to AWS kubectl
+    - mkdir -p /helm/.kube
+    - mkdir -p ~/.ssh
+    - echo "$ENCODED_ID_ED25519" | base64 -d > ~/.ssh/id_ed25519
+    - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
+    - chmod 400 ~/.ssh/id_ed25519
+    - scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o IdentitiesOnly=yes -o User=ubuntu ubuntu@$CLUSTER_IP:~/.kube/config /helm/.kube/config
+    - cat /helm/.kube/config
+    - echo "Modifying the kubeconfig file to use the master node's IP address..."
+    # delete line 4
+    - sed -i '4d' ~/.kube/config
+    # replace the server address with the master node's IP address and disable tls verification
+    - |
+      sed -i "s/server: https:\/\/.*:6443/server: https:\/\/$(cat terraform/cluster_ip.txt):6443\n    insecure-skip-tls-verify: true/g" ~/.kube/config
+    - cat ~/.kube/config
+    - echo "Checking nodes are available ..."
+    - kubectl get nodes
+    - echo "Helm initial config ..."
+    - helm plugin install https://github.com/databus23/helm-diff
+    - helm repo add traefik https://traefik.github.io/charts
+    - helm install traefik traefik/traefik --set installCRDs=true
+    - helm repo add signoz https://charts.signoz.io
+    - helm install signoz signoz/signoz --set installCRDs=true --values charts/values-signoz.yaml
+    # - helmfile apply
   dependencies:
     - connect-to-cluster-job
   artifacts:
     paths:
       - terraform/terraform.tfstate
       - terraform/cluster_ip.txt
+      - terraform/worker_ips.txt
   only:
     - main
   when: manual 
