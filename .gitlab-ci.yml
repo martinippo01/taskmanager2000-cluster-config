@@ -11,9 +11,6 @@ image:
 
 variables:
   TF_LOG: DEBUG
-  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-  AWS_SESSION_TOKEN: $AWS_SESSION_TOKEN
   ENCODED_ID_ED25519: $ENCODED_ID_ED25519
   ID_ED25519_pub: $ID_ED25519_PUB
   ACCESS_TOKEN: $CI_ACCESS_TOKEN_2
@@ -31,11 +28,8 @@ terraform-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
     - cd terraform
     - export AWS_PROFILE=default
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
     - terraform init
-    - terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+    - terraform apply -auto-approve
   artifacts:
     paths:
       - terraform/terraform.tfstate
@@ -68,11 +62,20 @@ connect-to-cluster-job:
         echo "❌ Error: worker_ips.txt is empty! Terraform output might be incorrect."
         exit 1
       fi
-    - echo "pushing cluster ip to gitlab"
-    # - curl --request PUT --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" --header "Content-Type: application/json" --data "{\"key\": \"CLUSTER_IP\", \"value\": \"$(cat cluster_ip.txt)\"}" "https://gitlab.com/api/v4/groups/YOUR_GROUP_ID/variables/CLUSTER_IP"
+    - jq -r '.outputs.ec2_nfs_server_private_ip.value' terraform.tfstate > nfs_server_ip.txt
+    - cat nfs_server_ip.txt
+    - |
+      if [ ! -s nfs_server_ip.txt ]; then
+        echo "❌ Error: nfs_server_ip.txt is empty! Terraform output might be incorrect."
+        exit 1
+      fi   
+    - echo "pushing variables to gitlab"
+    - |
+      curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"NFS_SERVER_IP\", \"value\": \"$(cat nfs_server_ip.txt)\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/NFS_SERVER_IP"
     - |
       curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"CLUSTER_IP\", \"value\": \"$(cat cluster_ip.txt)\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/CLUSTER_IP"
-    # - cd ..
+    - |
+      curl --request PUT --header "PRIVATE-TOKEN: $CI_ACCESS_TOKEN_FULL" --header "Content-Type: application/json" --data "{\"key\": \"WORKER_IPS\", \"value\": \"$(tr '\n' ' ' < worker_ips.txt | sed 's/ $//')\"}" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/WORKER_IPS"   # - cd ..
     # - chmod u+x ./init.sh ./transform_worker_ips.sh
     # - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
     # - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt    
@@ -115,11 +118,8 @@ terraform-destroy-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials    
     - cd terraform
     - export AWS_PROFILE=default
-    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    - export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
     - terraform init
-    - terraform destroy -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_session_token=$AWS_SESSION_TOKEN"
+    - terraform destroy -auto-approve
   dependencies:
     - terraform-job
   artifacts:
