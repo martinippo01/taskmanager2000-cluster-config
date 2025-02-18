@@ -119,12 +119,11 @@ set-up-cluster-job:
     - echo "Checking nodes are available ..."
     - kubectl get nodes
     - echo "Helm initial config ..."
-    - helm plugin install https://github.com/databus23/helm-diff
+    - helm plugin list | grep -q 'diff' || helm plugin install https://github.com/databus23/helm-diff
     - helm repo add traefik https://traefik.github.io/charts
-    - helm install traefik traefik/traefik --set installCRDs=true
+    - helm list -q | grep -q 'traefik' || helm install traefik traefik/traefik --set installCRDs=true
     - helm repo add signoz https://charts.signoz.io
-    - helm install signoz signoz/signoz --set installCRDs=true --values charts/values-signoz.yaml
-    # - helmfile apply
+    - helm list -q | grep -q 'signoz' || helm install signoz signoz/signoz --set installCRDs=true --values charts/values-signoz.yaml
   dependencies:
     - connect-to-cluster-job
   artifacts:
