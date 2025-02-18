@@ -96,6 +96,7 @@ set-up-cluster-job:
     # - chmod u+x ./init.sh ./transform_worker_ips.sh
     # - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
     # - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt    
+    - cd helm
     - echo "Deploying to k8s ..."
     # Move the config file to the helm directory to connecto to AWS kubectl
     - mkdir -p /helm/.kube
@@ -110,7 +111,7 @@ set-up-cluster-job:
     - sed -i '4d' ~/.kube/config
     # replace the server address with the master node's IP address and disable tls verification
     - |
-      sed -i "s/server: https:\/\/.*:6443/server: https:\/\/$(cat terraform/cluster_ip.txt):6443\n    insecure-skip-tls-verify: true/g" ~/.kube/config
+      sed -i "s/server: https:\/\/.*:6443/server: https:\/\/$(cat ../terraform/cluster_ip.txt):6443\n    insecure-skip-tls-verify: true/g" ~/.kube/config
     - cat ~/.kube/config
     - echo "Checking nodes are available ..."
     - kubectl get nodes
