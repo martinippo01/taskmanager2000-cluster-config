@@ -2,7 +2,7 @@ stages:
   - terraform
   - connect-to-cluster
   - set-up-cluster
-  - trigger-deployment
+  - workers-join-cluster
   - destroy
 
 image: 
@@ -86,7 +86,7 @@ connect-to-cluster-job:
       - terraform/nfs_server_ip.txt
   only:
     - main
-  when: manual 
+  needs: ["terraform-job"]
 
 set-up-cluster-job:
   stage: set-up-cluster
@@ -126,6 +126,8 @@ set-up-cluster-job:
     - helm list -q | grep -q 'signoz' || helm install signoz signoz/signoz --set installCRDs=true --values charts/values-signoz.yaml
   dependencies:
     - connect-to-cluster-job
+  when: delayed
+  start_in: 3 minutes
   artifacts:
     paths:
       - terraform/terraform.tfstate
@@ -133,7 +135,30 @@ set-up-cluster-job:
       - terraform/worker_ips.txt
   only:
     - main
-  when: manual 
+  needs: ["connect-to-cluster-job"]
+
+workers-join-cluster-job:
+  stage: workers-join-cluster
+  image: alpine:latest
+  script:
+    - apk add --no-cache bash
+    - echo "Joining workers to cluster..."
+    - chmod u+x ./init.sh
+    - tr '\n' ' ' < terraform/worker_ips.txt | sed 's/ $//' > terraform/worker_ips_transformed.txt
+    - ./init.sh terraform/cluster_ip.txt terraform/worker_ips_transformed.txt
+    - echo "Workers joined successfully!"
+  dependencies:
+    - set-up-cluster-job
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate
+      - terraform/cluster_ip.txt
+      - terraform/worker_ips.txt
+  when: delayed
+  start_in: 1 minutes
+  only:
+    - main
+  needs: ["set-up-cluster-job"]
 
 terraform-destroy-job:
   stage: destroy
