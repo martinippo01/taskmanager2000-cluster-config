@@ -23,8 +23,8 @@ data:
   # Info a mandarle al Scheduler
   TASK_SERVICE_URL: "{{ .Values.taskservice.service.name }}.{{ .Values.taskservice.namespace }}.svc.cluster.local:{{ .Values.taskservice.service.port }}/{{ .Values.agent.name }}"
   TASK_NAME: {{ .Values.agent.name }}
-  PARAM_NAMES: "{{ .Values.agent.paramNames | join \",\" }}"
-  PARAM_TYPES: "{{ .Values.agent.paramTypes | join \",\" }}"
+  PARAM_NAMES: "{{ .Values.agent.paramNames | join "," }}"
+  PARAM_TYPES: "{{ .Values.agent.paramTypes | join "," }}"
 
 
 

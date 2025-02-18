@@ -15,6 +15,9 @@ agentImage:
 sidecarImage:
   name: sidecar
 
+ingress:
+  enabled: false
+
 agent:
   url: "http://localhost:8000/echo"
   name: "echo"

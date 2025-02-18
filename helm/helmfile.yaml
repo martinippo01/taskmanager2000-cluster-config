@@ -28,8 +28,6 @@ releases:
     values:
       - ./charts/orquestador/values.yaml
       - ./charts/global-values.yaml
-    dependencies:
-      - nfs
 
   - name: scheduler
     chart: ./charts/scheduler
@@ -121,37 +119,37 @@ releases:
     values:
       - ./charts/echo/values.yaml
       - ./charts/global-values.yaml
-    dependencies:
-      - nfs
 
-  - name: bash-agent
-    chart: ./charts/bash
-    version: 1.0.0
-    namespace: agents
-    values:
-      - ./charts/bash/values.yaml
-      - ./charts/global-values.yaml
-    dependencies:
-      - nfs
 
-  - name: s3-upload-agent
-    chart: ./charts/s3-upload
-    version: 1.0.0
-    namespace: agents
-    values:
-      - ./charts/s3-upload/values.yaml
-      - ./charts/global-values.yaml
-    dependencies:
-      - nfs
-
-  - name: s3-download-agent
-    chart: ./charts/s3-download
-    version: 1.0.0
-    namespace: agents
-    values:
-      - ./charts/s3-download/values.yaml
-      - ./charts/global-values.yaml
-    dependencies:
-      - nfs
+    # TODO: Faltan las imagenes!!!
+#  - name: bash-agent
+#    chart: ./charts/bash
+#    version: 1.0.0
+#    namespace: agents
+#    values:
+#      - ./charts/bash/values.yaml
+#      - ./charts/global-values.yaml
+#    dependencies:
+#      - nfs
+#
+#  - name: s3-upload-agent
+#    chart: ./charts/s3-upload
+#    version: 1.0.0
+#    namespace: agents
+#    values:
+#      - ./charts/s3-upload/values.yaml
+#      - ./charts/global-values.yaml
+#    dependencies:
+#      - nfs
+#
+#  - name: s3-download-agent
+#    chart: ./charts/s3-download
+#    version: 1.0.0
+#    namespace: agents
+#    values:
+#      - ./charts/s3-download/values.yaml
+#      - ./charts/global-values.yaml
+#    dependencies:
+#      - nfs
 
 
