@@ -91,6 +91,7 @@ connect-to-cluster-job:
 set-up-cluster-job:
   stage: set-up-cluster
   script:
+    - apk add --no-cache curl jq kubectl
     # TODO maybe: join workers to cluster
     # - chmod u+x ./init.sh ./transform_worker_ips.sh
     # - ./transform_worker_ips.sh terraform/worker_ips.txt > terraform/worker_ips_transformed.txt
