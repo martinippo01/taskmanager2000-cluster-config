@@ -1,9 +1,59 @@
+@ip=54.167.63.87
+@base=http://{{ip}}:30000
+
 ### Create a Workflow
-GET http://54.83.89.192:30000/workflow-execution
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./workflow.yaml
+
+--boundary1234--
+
+### Toggle workflow status
+PUT {{base}}/workflows/UnEcho/status
+
+### Toggle workflow status (with version)
+PUT {{base}}/workflows/UnEcho/status?version=1
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/UnEcho
+Content-Type: application/json
+
+{
+  "inputArgs": {
+    "val_echo1": "Probandooo"
+  }
+}
+
+
+### Execute Workflow Request (with version)
+POST {{base}}/workflows/UnEcho?version=1
+Content-Type: application/json
+
+{
+  "inputArgs": {
+    "val_echo1": "Probandooo"
+  }
+}
+
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/43823568a72fc9971acfa43e3f354f7af3a62246
+
+
+
+
+### Create a Workflow
+GET http://54.85.82.93:30000/workflow-execution
 
 
 ### Post a workflow
-POST http://54.83.89.192:30000/workflows
+POST http://54.85.82.93:30000/workflows
 Content-Type: multipart/form-data; boundary=boundary1234
 
 --boundary1234
