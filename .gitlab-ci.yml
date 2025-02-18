@@ -7,7 +7,6 @@ stages:
 
 image: 
   name: hashicorp/terraform
-  entrypoint: [""]
 
 variables:
   TF_LOG: DEBUG
