@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.fullname }}
   labels:
     {{- toYaml .Values.labels | nindent 4 }}
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -36,15 +37,16 @@ spec:
             - name: KAFKA_CLIENT_ID_STA # Scheduler to Agent
               value: "{{ .Values.schedulerToAgent.clientId }}-$(POD_UID)"
           volumeMounts:
-            - name: shared-storage  # Name of the volume defined below
-              mountPath: /mnt/shared-data  # Mount path inside container
+            - name: {{ .Values.volumeMounts.name }}  # Name of the volume defined below
+              mountPath: {{ .Values.volumeMounts.mountPath }}  # Mount path inside container
+              readOnly: {{ .Values.volumeMounts.readOnly }}
         - name: {{ .Values.agentName }}   # Echo
           image: "{{ .Values.image.repository }}{{ .Values.agentImage.name }}:{{ .Values.image.tag }}"
           env:
             - name: AGENT_PORT
               value: "8000"
       volumes:
-        - name: shared-storage
+        - name: {{ .Values.volumes.name }}
           persistentVolumeClaim:
-            claimName: shared-nfs-pvc  # Fixed PVC name
+            claimName: {{ .Values.volumes.persistentVolumeClaim.claimName }} 
 

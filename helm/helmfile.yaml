@@ -106,11 +106,19 @@ releases:
     namespace: default
     chart: ./charts/signoz-ingress
 
-  - name: nfs
+  - name: shared-nfs
+    namespace: default
     chart: ./charts/nfs
     values:
-      - ./charts/nfs/values.yaml
-      - nfsServer: {{ requiredEnv "NFS_SERVER" }} # TIENE QUE ESTAR DEFINIDA LA IP DEL EC2 DONDE ESTÁ EL NFS
+      - names:
+          - "echo-pv"
+          - "upload-pv"
+          - "download-pv"
+          - "bash-pv"
+      - storage: "1Gi"
+      - accessMode: "ReadWriteMany"
+      - nfsServer: {{ requiredEnv "NFS_SERVER" }} # IP privada del EC2 en donde está el NFS
+      - nfsPath: "/mnt/nfs"
   
   - name: echo-agent
     chart: ./charts/echo
@@ -119,6 +127,19 @@ releases:
     values:
       - ./charts/echo/values.yaml
       - ./charts/global-values.yaml
+      - pvc:
+          name: "echo-service-pv"
+          accessMode: "ReadWriteMany"
+          size: "1Gi"
+          label: "echo-pv"
+      - volumes:
+          - name: "echo-service-pv"
+            persistentVolumeClaim:
+              claimName: "echo-service-pv"
+      - volumeMounts:
+          - name: "echo-service-pv"
+            mountPath: "/data"
+            readOnly: false
 
 
     # TODO: Faltan las imagenes!!!
@@ -129,8 +150,19 @@ releases:
 #    values:
 #      - ./charts/bash/values.yaml
 #      - ./charts/global-values.yaml
-#    dependencies:
-#      - nfs
+#      - pvc:
+#          name: "bash-service-pv"
+#          accessMode: "ReadWriteMany"
+#          size: "1Gi"
+#          label: "bash-pv"
+#      - volumes:
+#          - name: "bash-service-pv"
+#            persistentVolumeClaim:
+#              claimName: "bash-service-pv"
+#      - volumeMounts:
+#          - name: "bash-service-pv"
+#            mountPath: "/data"
+#            readOnly: false
 #
 #  - name: s3-upload-agent
 #    chart: ./charts/s3-upload
@@ -139,8 +171,19 @@ releases:
 #    values:
 #      - ./charts/s3-upload/values.yaml
 #      - ./charts/global-values.yaml
-#    dependencies:
-#      - nfs
+#      - pvc:
+#          name: "upload-service-pv"
+#          accessMode: "ReadWriteMany"
+#          size: "1Gi"
+#          label: "upload-pv"
+#      - volumes:
+#          - name: "upload-service-pv"
+#            persistentVolumeClaim:
+#              claimName: "upload-service-pv"
+#      - volumeMounts:
+#          - name: "upload-service-pv"
+#            mountPath: "/data"
+#            readOnly: false
 #
 #  - name: s3-download-agent
 #    chart: ./charts/s3-download
@@ -149,7 +192,17 @@ releases:
 #    values:
 #      - ./charts/s3-download/values.yaml
 #      - ./charts/global-values.yaml
-#    dependencies:
-#      - nfs
-
+#      - pvc:
+#          name: "download-service-pv"
+#          accessMode: "ReadWriteMany"
+#          size: "1Gi"
+#          label: "download-pv"
+#      - volumes:
+#          - name: "download-service-pv"
+#            persistentVolumeClaim:
+#              claimName: "download-service-pv"
+#      - volumeMounts:
+#          - name: "download-service-pv"
+#            mountPath: "/data"
+#            readOnly: false
 
