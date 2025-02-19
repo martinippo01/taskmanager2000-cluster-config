@@ -32,7 +32,7 @@ labels:
   app: download
 
 nfs:
-  path: /mnt/nfs
+  path: /answers
 
 livenessProbe:
   httpGet:

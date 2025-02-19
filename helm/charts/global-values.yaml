@@ -3,7 +3,7 @@ image:
   tag: latest
 
 nfs:
-  path: /mnt/nfs
+  path: /answers
 
 kafkaqueue:
   consumerBrokers: kafka.default.svc.cluster.local:9092

@@ -35,7 +35,7 @@ labels:
   app: echo
 
 nfs:
-  path: /mnt/nfs
+  path: /answers
 
 livenessProbe:
   httpGet:
