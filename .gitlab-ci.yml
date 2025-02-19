@@ -122,8 +122,7 @@ set-up-cluster-job:
     - helm list -q | grep -q 'signoz' || helm install signoz signoz/signoz --set installCRDs=true --values charts/values-signoz.yaml
   dependencies:
     - connect-to-cluster-job
-  when: delayed
-  start_in: 3 minutes
+  when: manual
   artifacts:
     paths:
       - terraform/terraform.tfstate
