@@ -10,12 +10,16 @@ if [ -z "$MASTER_IP" ]; then
   exit 1
 fi
 
+echo $MASTER_IP
+
 echo "==============Retrieving Worker IPs from Gitlab==============="
 WORKER_IPS=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/groups/$GROUP_ID/variables/WORKER_IPS" | jq -r '.value')
 if [ -z "$WORKER_IPS" ]; then
   echo "Error: Failed to retrieve WORKER_IPS"
   exit 1
 fi
+
+echo $WORKER_IPS
 
 # Validate if SSH key exists and no argument is passed
 if [ ! -f ~/.ssh/id_ed25519 ] && [ -z "$1" ]; then
