@@ -1,4 +1,4 @@
-@ip=54.167.63.87
+@ip=3.233.241.162
 @base=http://{{ip}}:30000
 
 ### Create a Workflow
@@ -14,69 +14,43 @@ Content-Type: application/yaml
 --boundary1234--
 
 ### Toggle workflow status
-PUT {{base}}/workflows/UnEcho/status
+PUT {{base}}/workflows/Nuevo/status
 
 ### Toggle workflow status (with version)
-PUT {{base}}/workflows/UnEcho/status?version=1
+PUT {{base}}/workflows/Nuevo/status?version=1
 
 
 ### Execute Workflow Request
-POST {{base}}/workflows/UnEcho
+POST {{base}}/workflows/Nuevo
 Content-Type: application/json
 
 {
-  "inputArgs": {
+  "inputArguments": {
     "val_echo1": "Probandooo"
   }
 }
 
 
 ### Execute Workflow Request (with version)
-POST {{base}}/workflows/UnEcho?version=1
+POST {{base}}/workflows/Nuevo?version=1
 Content-Type: application/json
 
 {
-  "inputArgs": {
+  "inputArguments": {
     "val_echo1": "Probandooo"
   }
 }
 
 
 ### Get Workflow Execution
-GET {{base}}/workflow-execution/43823568a72fc9971acfa43e3f354f7af3a62246
+GET {{base}}/workflow-execution/463be6760a8a39a3ebcdc688d9099439e3fcf0fb
 
 
+### Get Specific Step
+GET {{base}}/workflow-execution/463be6760a8a39a3ebcdc688d9099439e3fcf0fb/steps/0
 
 
-### Create a Workflow
-GET http://54.85.82.93:30000/workflow-execution
+### Get all executions of a workflow
+GET {{base}}/workflow-execution?workflow=Nuevo
 
-
-### Post a workflow
-POST http://54.85.82.93:30000/workflows
-Content-Type: multipart/form-data; boundary=boundary1234
-
---boundary1234
-Content-Disposition: form-data; name="file"; filename="workflow.yaml"
-Content-Type: application/yaml
-
-< ./workflow.yaml
-
---boundary1234--
-
-
-### Toggle
-PUT http://54.83.89.192:30000/workflows/UnEcho/status
-
-
-
-### Execute Workflow Request
-POST http://54.83.89.192:30000/workflows/UnEcho?version=1
-Content-Type: application/json
-
-{
-  "inputArgs": {
-    "val_echo1": "Probandooo"
-  }
-}
 
