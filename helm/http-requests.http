@@ -319,3 +319,43 @@ GET {{base}}/workflow-execution/e3fce5bef2b1a1a78e506e8587da25fced1bc9d1
 
 
 
+
+
+-------------------------- Upload ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./upload.yaml
+
+--boundary1234--
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/upload
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "bucket": "microservicios-prueba-bucket",
+    "region": "us-east-1",
+    "name":   "un.yaml",
+    "content": "bmFtZTogIlRlc3QgUGxhbiIKZGVzY3JpcHRpb246ICJBIGRlc2NyaXB0aW9uIG9mIHRoZSB0ZXN0IHBsYW4iCnN0ZXBzOgogICAgICAgLSBuYW1lOiBob2xhCiAgICAgICAgIHRhc2s6IGVjaG8KICAgICAgICAgcGFyYW1zOgogICAgICAgICAgLSBuYW1lOiBwYXJhbTEKICAgICAgICAgICAgdHlwZTogc3RyaW5nCiAgICAgICAgICAgIHZhbHVlOiBhX2NvbXBsZXRhcl8xCiAgICAgICAgICAtIG5hbWU6IHBhcmFtMgogICAgICAgICAgICB0eXBlOiBudW1iZXIKICAgICAgICAgICAgdmFsdWU6IGFfY29tcGxldGFyXzIKICAgICAgICAgICAgY29uc3RhbnQ6IHRydWUKICAgICAgIC0gbmFtZTogamFqYWphCiAgICAgICAgIHRhc2s6IGJhc2gKICAgICAgICAgcGFyYW1zOgogICAgICAgICAgLSBuYW1lOiBwYXJhbTMKICAgICAgICAgICAgdHlwZTogYm9vbGVhbgogICAgICAgICAgICBmcm9tOiBob2xhCiAgICAgICAgICAtIG5hbWU6IHBhcmFtNAogICAgICAgICAgICB0eXBlOiBzdHJpbmdbXQogICAgICAgICAgICB2YWx1ZTogYV9jb21wbGV0YXJfMw=="
+  }
+}
+
+base64 test.png > encoded.txt
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/ff716399bbc014ca89316b5b98e5fa410a4c6d9a
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/e3fce5bef2b1a1a78e506e8587da25fced1bc9d1
+
+
+
