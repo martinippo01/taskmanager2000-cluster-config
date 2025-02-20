@@ -27,10 +27,16 @@ livenessProbe:
   httpGet:
     path: /ping
     port: sche-cont-port
+  initialDelaySeconds: 60  # Wait 10 seconds before the first probe
+  periodSeconds: 20         # Check every 5 seconds
+  failureThreshold: 3      # Allow 3 failed checks before restart
 
 readinessProbe:
   httpGet:
     path: /ping
     port: sche-cont-port
+  initialDelaySeconds: 60  # Wait 5 seconds before the first probe
+  periodSeconds: 20         # Check every 3 seconds
+  failureThreshold: 3      # Allow 3 failed checks before marking unready
 
 replicaCount: 3

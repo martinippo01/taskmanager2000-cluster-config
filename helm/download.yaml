@@ -1,0 +1,16 @@
+name: download
+description: Downlodea
+version: "1"
+steps:
+  - name: download
+    task: s3_download
+    params:
+      - name: aws_bucket
+        type: string
+        value: bucket
+      - name: aws_region
+        type: string
+        value: region
+      - name: file_name
+        type: string
+        value: file_name

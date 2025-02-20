@@ -17,12 +17,12 @@ sasl:
       - "your-password"
 
 broker:
-  replicaCount: 3
+  replicaCount: 3 # Esto estaba en 3
   persistence:
     size: 2Gi
 
 controller:
-  replicaCount: 3
+  replicaCount: 3 # Esto estaba en 3
   controllerOnly: false
   persistence:
     size: 2Gi
@@ -41,7 +41,7 @@ listeners:
     name: CONTROLLER
 
 provisioning:
-  numPartitions: 3
+  numPartitions: 3 # Esto estaba en 3
   replicationFactor: 1  
   
 extraEnvVars:

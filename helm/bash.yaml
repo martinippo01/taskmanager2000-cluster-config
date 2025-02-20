@@ -1,0 +1,17 @@
+name: bash
+description: Hace dos echos
+version: "1"
+steps:
+  - name: first
+    task: bash
+    params:
+      - name: command
+        type: string
+        value: val_command
+  - name: second
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: val_echo
+

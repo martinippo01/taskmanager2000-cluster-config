@@ -1,4 +1,4 @@
-@ip=3.88.63.117
+@ip=54.198.186.205
 @base=http://{{ip}}:30000
 
 ### Create a Workflow
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 {
   "inputArguments": {
-    "val_echo1": "Probando 5!!!!"
+    "val_echo1": "Intentemos 75!"
   }
 }
 
@@ -37,20 +37,221 @@ Content-Type: application/json
 
 {
   "inputArguments": {
-    "val_echo1": "Probandoo 2"
+    "val_echo1": "Probandoo 3"
   }
 }
 
 
 ### Get Workflow Execution
-GET {{base}}/workflow-execution/c25138df6f63eef49e97a2e21549b109beadf6e1
+GET {{base}}/workflow-execution/4909defd8bc85ccbb4d36cbf75c0f474fa4f0bae
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/4909defd8bc85ccbb4d36cbf75c0f474fa4f0bae
 
 
 ### Get Specific Step
-GET {{base}}/workflow-execution/c25138df6f63eef49e97a2e21549b109beadf6e1/steps/0
+GET {{base}}/workflow-execution/06294be3f86ecaa32be8327373cda236527f72d8/steps/0
 
 
 ### Get all executions of a workflow
 GET {{base}}/workflow-execution?workflow=Nuevo
+
+
+
+# --------------------------- Mas complejo ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./workflowMasComplejo.yaml
+
+--boundary1234--
+
+### Toggle workflow status
+PUT {{base}}/workflows/otro/status
+
+### Toggle workflow status (with version)
+PUT {{base}}/workflows/otro/status?version=1
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/otro
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_echo1": "Primero",
+    "val_echo2": "Segundo",
+    "val_echo3": "Tercero"
+  }
+}
+
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/4e151cbb2d0d0527b00dd744fcb8d8c5bb94d755
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/4e151cbb2d0d0527b00dd744fcb8d8c5bb94d755
+
+
+
+
+
+
+
+# --------------------------- Con Un From ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./tripleEchoPeroNo.yaml
+
+--boundary1234--
+
+### Toggle workflow status
+PUT {{base}}/workflows/tripleEchoPeroNo/status
+
+### Toggle workflow status (with version)
+PUT {{base}}/workflows/tripleEchoPeroNo/status?version=1
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/tripleEchoPeroNo
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_echo1": "Primero",
+    "val_echo2": "Segundo"
+  }
+}
+
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/1d126efe6261619d78c2988d464db6211b414f9e
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/1d126efe6261619d78c2988d464db6211b414f9e
+
+
+
+-------------------------- Uno con Constant ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./constant.yaml
+
+--boundary1234--
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/constant
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_echo1": "Primero",
+    "val_echo3": "El tercero"
+  }
+}
+
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/1d126efe6261619d78c2988d464db6211b414f9e
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/c68ee9dbbeed6fd4895ee7b13a94ca780ee90df8
+
+
+
+-------------------------- Uno con bash ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./bash.yaml
+
+--boundary1234--
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/bash
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_command": "date",
+    "val_echo": "Soy un echo"
+  }
+}
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/fa7a18309a72b26115af383fb80d814742dd0009
+
+
+
+
+-------------------------- Uno con download ---------------------------
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./download.yaml
+
+--boundary1234--
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/unDownload
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "bucket": "bucket",
+    "region": "region",
+    "file_name": "file_name"
+  }
+}
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/fa7a18309a72b26115af383fb80d814742dd0009
+
+
+
+
+
+-------------------------- Uno con internals ---------------------------
+
+
+
+
+
+
 
 

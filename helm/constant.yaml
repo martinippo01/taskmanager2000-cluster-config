@@ -1,0 +1,24 @@
+name: constant
+description: Hace dos echos
+version: "1"
+steps:
+  - name: echo1
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: val_echo1
+  - name: echo2
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: asdfasdf
+        constant: true
+  - name: echo3
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: val_echo3
+

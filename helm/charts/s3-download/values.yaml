@@ -17,10 +17,14 @@ sidecarImage:
 
 agent:
   url: "http://localhost:8000/download"
-  name: "download"
+  name: "s3_download"
   paramNames:
-    - "inputs"
+    - "aws_bucket"
+    - "aws_region"
+    - "file_name"
   paramTypes:
+    - "string"
+    - "string"
     - "string"
 
 schedulerToAgent:
