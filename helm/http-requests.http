@@ -26,7 +26,7 @@ Content-Type: application/json
 
 {
   "inputArguments": {
-    "val_echo1": "Probandooo"
+    "val_echo1": "Probando 5!!!!"
   }
 }
 
@@ -43,11 +43,11 @@ Content-Type: application/json
 
 
 ### Get Workflow Execution
-GET {{base}}/workflow-execution/0f220f1ebeca2db2b213d9d17d989635d22759c1
+GET {{base}}/workflow-execution/251b61813e150f04d778b045295a99a813b22ebf
 
 
 ### Get Specific Step
-GET {{base}}/workflow-execution/0f220f1ebeca2db2b213d9d17d989635d22759c1/steps/0
+GET {{base}}/workflow-execution/251b61813e150f04d778b045295a99a813b22ebf/steps/0
 
 
 ### Get all executions of a workflow
