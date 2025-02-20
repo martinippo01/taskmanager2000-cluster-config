@@ -28,17 +28,8 @@ terraform-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials
     - cd terraform
     - export AWS_PROFILE=default
-    - |
-      if [ -n "$CI_JOB_TOKEN" ]; then
-        echo "Using remote GitLab backend..."
-        export TF_CLI_ARGS_init="-backend-config=backend-gitlab.tfvars"
-      else
-        echo "Using local backend..."
-        export TF_CLI_ARGS_init=""
-      fi
     - terraform init
     - terraform apply -auto-approve
-    - terraform state push terraform.tfstate
   artifacts:
     paths:
       - terraform/terraform.tfstate
@@ -55,16 +46,7 @@ connect-to-cluster-job:
     - echo "$ID_ED25519_pub" > ~/.ssh/id_ed25519.pub
     - chmod 400 ~/.ssh/id_ed25519
     - cd terraform
-    - |
-      if [ -n "$CI_JOB_TOKEN" ]; then
-        echo "Using remote GitLab backend..."
-        export TF_CLI_ARGS_init="-backend-config=backend-gitlab.tfvars"
-      else
-        echo "Using local backend..."
-        export TF_CLI_ARGS_init=""
-      fi
     - terraform init
-    - terraform state pull > terraform.tfstate
     - terraform show -json > terraform_output.json
     - jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' terraform_output.json > cluster_ip.txt
     - cat cluster_ip.txt
@@ -189,16 +171,7 @@ terraform-destroy-job:
     - echo "$AWS_CREDENTIALS" > ~/.aws/credentials    
     - cd terraform
     - export AWS_PROFILE=default
-    - |
-      if [ -n "$CI_JOB_TOKEN" ]; then
-        echo "Using remote GitLab backend..."
-        export TF_CLI_ARGS_init="-backend-config=backend-gitlab.tfvars"
-      else
-        echo "Using local backend..."
-        export TF_CLI_ARGS_init=""
-      fi
     - terraform init
-    - terraform state pull > terraform.tfstate
     - terraform destroy -auto-approve
   dependencies:
     - terraform-job
