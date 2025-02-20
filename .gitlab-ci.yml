@@ -29,7 +29,7 @@ terraform-job:
     - cd terraform
     - export AWS_PROFILE=default
     - chmod u+x ./terraform-init.sh
-    - ./terraform-init.sh
+    - bash ./terraform-init.sh
     - terraform apply -auto-approve
     - terraform state push terraform.tfstate
   artifacts:
@@ -49,7 +49,7 @@ connect-to-cluster-job:
     - chmod 400 ~/.ssh/id_ed25519
     - cd terraform
     - chmod u+x ./terraform-init.sh
-    - ./terraform-init.sh
+    - bash ./terraform-init.sh
     - terraform state pull > terraform.tfstate
     - terraform show -json > terraform_output.json
     - jq -r '.values.root_module.resources[] | select(.address == "aws_instance.ec2_k8s_master") | .values.public_ip' terraform_output.json > cluster_ip.txt
@@ -176,7 +176,7 @@ terraform-destroy-job:
     - cd terraform
     - export AWS_PROFILE=default
     - chmod u+x ./terraform-init.sh
-    - ./terraform-init.sh
+    - bash ./terraform-init.sh
     - terraform state pull > terraform.tfstate
     - terraform destroy -auto-approve
   dependencies:
