@@ -1,6 +1,6 @@
-name: otro
+name: internals123
 description: Hace dos echos
-version: "1"
+version: "2"
 steps:
   - name: echo1
     task: echo
@@ -8,16 +8,16 @@ steps:
       - name: input
         type: string
         value: val_echo1
-  - name: echo2
-    task: echo
+  - name: to_upper
+    task: upper
     params:
-      - name: input
+      - name: argument_to_upper
         type: string
-        value: val_echo2
-  - name: echo3
-    task: echo
+        from: echo1
+  - name: to_lower
+    task: lower
     params:
-      - name: input
+      - name: argument_to_lower
         type: string
-        value: val_echo3
+        from: echo1
 

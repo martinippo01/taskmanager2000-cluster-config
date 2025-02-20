@@ -228,30 +228,94 @@ Content-Type: application/yaml
 
 
 ### Execute Workflow Request
-POST {{base}}/workflows/unDownload
+POST {{base}}/workflows/download
 Content-Type: application/json
 
 {
   "inputArguments": {
-    "bucket": "bucket",
-    "region": "region",
-    "file_name": "file_name"
+    "bucket": "microservicios-prueba-bucket",
+    "region": "us-east-1",
+    "file_name": "kubernetes.png"
   }
 }
 
 ### Get Workflow Execution answer
-GET {{base}}/workflow-execution/answer/fa7a18309a72b26115af383fb80d814742dd0009
+GET {{base}}/workflow-execution/answer/365e314636160a6e484c3a9fee5a1ca6987635d9
 
 
-
+base64 --decode --ignore-garbage file.txt > output.png
 
 
 -------------------------- Uno con internals ---------------------------
 
 
 
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./internals.yaml
+
+--boundary1234--
 
 
+### Execute Workflow Request
+POST {{base}}/workflows/internals123
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_echo1": "AsddASDADSsdaddsdsfw"
+  }
+}
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/74966b04f1fc2e2dfd80200812b0110c0da90483
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/78e9aa5eb43766123ca01a82df3f3cd6267cbc85
+
+
+
+
+-------------------------- Decision ---------------------------
+
+
+### Create a Workflow
+POST {{base}}/workflows
+Content-Type: multipart/form-data; boundary=boundary1234
+
+--boundary1234
+Content-Disposition: form-data; name="file"; filename="workflow.yaml"
+Content-Type: application/yaml
+
+< ./condicion.yaml
+
+--boundary1234--
+
+
+### Execute Workflow Request
+POST {{base}}/workflows/condicional
+Content-Type: application/json
+
+{
+  "inputArguments": {
+    "val_echo1": "Un Echo!",
+    "laCondicion": "greater",
+    "izq": "hola",
+    "der": "chau"
+  }
+}
+
+### Get Workflow Execution answer
+GET {{base}}/workflow-execution/answer/e8b03b707f8d6340f91ef3364715c2d246ec6539
+
+### Get Workflow Execution
+GET {{base}}/workflow-execution/e3fce5bef2b1a1a78e506e8587da25fced1bc9d1
 
 
 

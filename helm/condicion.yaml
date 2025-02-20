@@ -1,0 +1,43 @@
+name: condicional
+description: Hace dos echos
+version: "1"
+steps:
+  - name: echo1
+    task: echo
+    params:
+      - name: input
+        type: string
+        value: val_echo1
+  - name: my_decision
+    task: decision
+    params:
+      - name: condition
+        type: string
+        value: laCondicion
+      - name: left
+        type: string
+        value: izq
+      - name: right
+        type: string
+        value: der
+      - name: success
+        type: string
+        value: to_lower
+        constant: true
+      - name: failure
+        type: string
+        value: to_upper
+        constant: true
+  - name: to_lower
+    task: lower
+    params:
+      - name: argument_to_lower
+        type: string
+        from: echo1
+  - name: to_upper
+    task: upper
+    params:
+      - name: argument_to_upper
+        type: string
+        from: echo1
+

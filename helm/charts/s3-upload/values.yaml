@@ -17,11 +17,17 @@ sidecarImage:
 
 agent:
   url: "http://localhost:8000/upload"
-  name: "upload"
+  name: "s3_upload"
   paramNames:
-    - "file"
+    - "aws_bucket"
+    - "aws_region"
+    - "file_key"
+    - "file_content"
   paramTypes:
-    - "string" # TODO: No sé qué hacer con esto
+    - "string"
+    - "string"
+    - "string"
+    - "string"
 
 schedulerToAgent:
   clientId: scheToAgentUpload
